@@ -1,0 +1,342 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual and Automatic Question Paper Generation System</title>
+    <!-- Link Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: rgb(192, 226, 239);
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar-card {
+            margin-top: 50px;
+            background-color: rgb(13, 14, 13);
+            width: 200px;
+            padding: 20px;
+        }
+        
+        .nav-link {
+            display: block;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: rgb(128, 128, 128);
+            transition: background-color 0.3s;
+            border-radius: 5px;
+            margin-bottom: 8px;
+            font-size: large;
+            position: relative;
+        }
+        .nav-link:hover {
+            background-color: #e0e0e0;
+            border-bottom: 2px solid blue;
+        }
+        .active{
+            background-color: #e0e0e0;
+            border-bottom: 2px solid blue;
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+            height: 250px;
+            display: flex;
+            flex-direction: row; /* Changed from column to row */
+            text-align: center;
+        }
+        
+        
+        nav {
+            background-color:rgb(15, 14, 14);
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            position:absolute;
+        }
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        ul li {
+            display: inline;
+            margin-right: 1rem;
+        }
+        ul li a {
+            text-decoration: none;
+            color: #0e0f0f;
+        }
+        
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgb(2, 2, 2);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            height: 40px;
+        }
+        
+        .nav-link {
+            display: block;
+            padding: 5px 15px;
+            text-decoration: none;
+            color: white;
+            transition: background-color 0.3s;
+            border-radius: 5px;
+            margin-bottom: 8px;
+            font-size: large;
+        }
+        .nav-link:hover {
+            background-color: #e0e0e0;
+            color: black;
+        }
+        .navb {
+            height: 50px;
+            background-color: rgb(13, 13, 13);
+            display: flex;
+            justify-content: space-between; /* Align items to the start and end of the navbar */
+            align-items: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 5%;
+            z-index: 1000;
+            color: white;
+        }
+        
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: right; /* Align links to the right side */
+        }
+        
+        ul li {
+            display: inline;
+            margin-right: 1rem;
+            
+        }
+        
+        
+        ul li a {
+            text-decoration: none;
+            color:white
+        }
+        .sidebar-card ul li a i {
+            display: inline-block; /* Ensure the icons are displayed as inline blocks */
+            width: 10px; /* Set a fixed width for the icons */
+            margin-left: 0px; /* Center the icon horizontally */
+            margin-top: 30px;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            padding: 8px; /* Adjust padding */
+            margin-bottom: 20px;
+            border: none; /* Remove border */
+            border-bottom: 1px solid #ccc; /* Add bottom border */
+            width: calc(100% - 16px); /* Adjusted width */
+            background-color: transparent; /* Transparent background */
+            transition: border-bottom-color 0.3s; /* Smooth transition */
+            
+        }
+      
+/* Define a font family */
+@import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&display=swap');
+
+/* Apply the font family to the h3 element within the navigation bar */
+/* Move the h3 tag to the left with higher specificity */
+.navb h3 {
+    font-family: 'Syncopate', sans-serif;
+    margin-right: auto; /* Push the h3 tag to the left side */
+     /* Add a margin on the left for spacing */
+}
+.card-container {
+    position: relative;
+    width: 65vmin;
+    height: 80vmin;
+}
+
+.card {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    border-radius: 2px;
+    border: 2px solid #ccc; /* Add border */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.35);
+    transition: transform .35s ease-out;
+    transform: translate(var(--x), var(--y)) scale(.35) rotate(var(--angle));
+    will-change: transform;
+
+    &:hover {
+        transform: scale(1) rotate(0deg);
+        z-index: 1;
+
+        &:before {
+            opacity: 1;
+        }
+    }
+}
+
+
+.card:before {
+    content: "";
+    display: block;
+    width: 90%;
+    height: 80%;
+    margin: 5%;
+    background: var(--image) center center no-repeat;
+    background-size: cover;
+    box-shadow: inset 0 0 5px rgba(#222, .35);
+    border-radius: 2px;
+    filter: sepia(.2) brightness(.9) contrast(1.2);
+    transition: opacity .35s ease-out;
+    opacity: .5;
+    will-change: opacity;
+}
+
+.card:after {
+    display: block;
+    content: var(--caption);
+    font-weight: 500;
+    color: #555;
+    font-size: 3vmin;
+    opacity: .75;
+    text-align: center;
+}
+.quotation {
+    position: fixed;
+    top: 30%; 
+    right: 20px; 
+    transform: translateY(-50%); 
+    z-index: 1000;
+    width: 200px; /* Adjust width as needed */
+    right: 10%;
+}
+
+.quotation p {
+    margin: 0;
+}
+
+.line1, .line2, .line3 {
+    width: 100%;
+    text-align: center; /* Center align for line 1 and 2 */
+}
+
+.line3 {
+    text-align: right; /* Right align for line 3 */
+}
+
+.highlight {
+    font-size: 16px;
+    font-weight: bold;
+    color: #FF6347; /* Tomato Red */
+}
+
+.larger {
+    font-size: 30px; /* Increased font size */
+    font-family: 'Arial', sans-serif;
+    color: #4682B4; /* Steel Blue */
+}
+
+.lobster {
+    font-family: 'Lobster', cursive;
+    font-size: 25px; /* Adjusted font size */
+    color: #2E8B57; /* Sea Green */
+    width: 250px;
+}
+.pacifico-regular {
+        font-family: "Pacifico", cursive;
+        font-weight: 400;
+        font-style: normal;
+        }
+
+
+    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia&effect=fire">
+</head>
+<body>
+
+    <nav class="navb">
+        <h2 class="pacifico-regular">Manual and Automatic Question Paper Generation System</h2> <!-- Add font-family style here -->
+        <ul>
+            
+                   
+            <li><a href="/profile" style="margin-right: 50px;"><i class="fas fa-user"></i> Profile</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+            <div class="sidebar-card">
+                <ul style="list-style-type:none; padding: 0; margin-bottom: 50px;">
+                    <li style="text-align:left;"><a href="/create" class="nav-link"><i class="fas fa-file" style="margin-right: 10px;"></i>Manual Question Paper Creation</a></li>
+                    <li style="text-align:left;"><a href="/automatic" class="nav-link"><i class="fas fa-database" style="margin-right: 10px;"></i> Automatic Question Paper Generation</a></li>
+                    <li style="text-align:left;"><a href="/question_papers" class="nav-link" ><i class="fas fa-file-alt" style="margin-right: 10px;"></i>
+                        Question Papers</a></li>
+                    <li style="text-align:left;"><a href="/notesgeneration" class="nav-link" ><i class="fas fa-book" style="margin-right: 10px;"></i>
+                            Notes Generation</a></li>
+                    <li style="text-align: left;"><a href="/logout" class="nav-link"><i class="fas fa-sign-out-alt" style="margin-right: 10px;"></i> Log out</a></li>
+                    
+                </ul>
+            </div>
+    
+        
+        <div>
+            <div class="quotation">
+                <p class="line1"><span class="highlight">" Unlock the door to</span></p>
+                <p class="line2"><span class="larger">endless knowledge</span></p>
+                <p class="line3"><span class="lobster">with just a question paper away...."</span></p>
+            </div>
+            
+            
+            
+            <div class="card-container">
+                <a href="/question_papers" class="card" style="--image: url('{%static 'img/ex1.png' %}'); --angle: -5deg; --x: 5%;height: 500px; width: 400px; --y: 15%; --caption: 'Mid-Term Exam'; background-color: white;"></a>
+                <a href="/question_papers" class="card" style="--image: url('{%static 'img/ex2.png' %}'); --angle: -1deg; --x: -10%;height: 400px; width: 400px; --y: -20%; --caption: 'Answer Script'; background-color:white;"></a>
+                <a href="/create" class="card" style="--image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/448976/los-angeles.jpg'); --angle: -4deg; --x: -20%; --y: 5%; background-color: #e5f4d4;">
+                    <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);font-size: 50px;">Manual Question Paper Creation</span>
+                </a>
+                <a href="/automatic" class="card" style="--image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/448976/italy.jpg'); --angle: 7deg; --x: 10%; --y: -7%;background-color: #ebe6ad;">
+                    <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);font-size: 50px;">Automatic Question Paper Generation</span>
+                </a>
+                <a href="/notesgeneration" class="card" style="--image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/448976/italy.jpg');--angle: -20deg; --x: 30%; --y: 15%;background-color: #d3f9b5;">
+                    <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);font-size: 50px;">Notes Generation</span>
+                </a>
+                
+                
+                
+                <!-- Add more cards as needed -->
+            </div>
+            
+    
+        </div>
+    
+    <footer>
+        <p> Bapatla Engineering College,Bapatla</p>
+    </footer>
+
+    
+    
+    
+</body>
+</html>

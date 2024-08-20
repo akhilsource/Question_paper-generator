@@ -1,0 +1,499 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automatic Question Paper Database </title>
+
+    
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jacquard+24&family=Jersey+15+Charted&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .jersey-15-charted-regular {
+        font-family: "Jersey 15 Charted", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            color: black;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sidebar-card {
+            margin-top: 5px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .nav-link {
+            display: block;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: black;
+            transition: background-color 0.3s;
+            border-radius: 5px;
+            margin-bottom: 8px;
+            font-size: large;
+            position: relative;
+        }
+        .nav-link:hover {
+            background-color: #e0e0e0;
+            border-bottom: 2px solid blue;
+        }
+        
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+        
+        .form-container {
+            max-width: 800px;
+            margin: 50px auto; /* Center the form */
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: calc(100% - 60px); /* Adjusted width */
+        }
+        
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        form {
+            /* No need to specify width here */
+        }
+        
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            width: 100%; /* Make labels take full width */
+        }
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+        }
+        
+        input[type="date"],
+        input[type="time"] {
+            /* Adjust padding for date and time inputs */
+            padding: 8px;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            padding: 8px; /* Adjust padding */
+            margin-bottom: 20px;
+            border: none; /* Remove border */
+            border-bottom: 1px solid #ccc; /* Add bottom border */
+            width: calc(100% - 16px); /* Adjusted width */
+            background-color: transparent; /* Transparent background */
+            transition: border-bottom-color 0.3s; /* Smooth transition */
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
+            border-bottom-color: #007bff; /* Change border color on focus */
+            outline: none; /* Remove outline */
+        }
+        input{
+            font-size: large;
+            color:gray;
+        }
+        .btn-container {
+            text-align: center;
+            width: 100%; /* Ensure buttons take full width */
+        }
+        
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 15%; /* Adjusted width */
+            margin: 0 5px; /* Add margin between buttons */
+        }
+        
+        button:hover {
+            background-color: #75ed6f;
+        }
+        
+        .section {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px; /* Adjust border radius */
+            padding: 20px;
+            width: 80%; /* Ensure sections take full width */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add shadow */
+        }
+        
+        .questions-container {
+            margin-top: 20px;
+        }
+        
+        .questions-container ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .questions-container ul li {
+            margin-bottom: 10px;
+        }
+        
+        .questions-container p {
+            margin-top: 10px;
+            color: #888;
+            font-style: italic;
+        }
+        .navb {
+            height: 50px;
+            background-color: white;
+            display: flex;
+            justify-content: space-between; /* Align items to the start and end of the navbar */
+            align-items: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding-left: 2%;
+            height: 10%;
+            z-index: 1000;
+            color: black;
+        }
+        .nav-icon{
+            color: black;
+            padding:5px;
+            border-radius: 5px;
+            font-weight: bold;
+          
+        }
+        .nav-list{
+            list-style-type: none;
+        }
+        .nav-icon:hover{
+            
+            padding:5px;
+            border-radius: 5px;
+            background-color: #e0e0e0;
+            border-bottom: 2px solid blue;
+            
+            
+            list-style-type: none;
+        }
+        .jacquard-24-regular {
+        font-family: "Jacquard 24", system-ui;
+        font-weight: 400;
+        font-style: normal;
+        }
+        .pacifico-regular {
+        font-family: "Pacifico", cursive;
+        font-weight: 400;
+        font-style: normal;
+        }
+        .active{
+            background-color: #e0e0e0;
+            border-bottom: 2px solid blue;
+        }
+
+    </style>
+</head>
+<body>
+    
+    <nav class="navb">
+        <h2 class="pacifico-regular">Manual and Automatic Question Paper Generation System</h2> <!-- Add font-family style here -->
+        <ul>
+            
+                   
+            <li class="nav-list"><a class="nav-icon"  href="/profile" style="margin-right: 50px;"><i class="fas fa-user"></i> Profile</a></li>
+        </ul>
+    </nav>
+   
+    
+    <div style="margin-top: 4%;">
+        <div class="container">
+            <div class="sidebar">
+                <div class="logo" style="margin-left: 20%;">
+                    <a href="/dashboard" ><img src="{%static 'img/image.png' %}" width="100px" /></a>
+                </div>
+                <div class="sidebar-card">
+                    <ul style="list-style-type:none; padding: 0;">
+                        <li><a href="/dashboard" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                        <li><a href="/create" class="nav-link"><i class="fas fa-file" style="margin-right: 10px;"></i>Manual Question Paper Creation</a></li>
+                        <li><a href="/automatic" class="nav-link active"><i class="fas fa-database" style="margin-right: 10px;"></i>Automatic Question Paper Generation</a></li>
+                        <li><a href="/question_papers" class="nav-link" ><i class="fas fa-file-alt" style="margin-right: 10px;"></i>
+                            Question Papers</a></li>
+                        <li><a href="/notesgeneration" class="nav-link" ><i class="fas fa-book" style="margin-right: 10px;"></i>
+                                Notes Generation</a></li>
+                        <li><a href="/logout" class="nav-link"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
+                    </ul>
+                    
+                </div>
+            </div>
+            
+            <div class="content">
+                
+                <form class="form-container" action="" method="POST" id="questionForm" style="margin-top: 10px;"> {% csrf_token %}
+                    <h2 style="text-align: center;">Automatic Question Paper Generation</h2>
+                    <label for="dept">Select Department:</label>
+                    <select id="dept" name="dept">
+                        <option value="Select">Select</option>
+                        <option value="Department of INFORMATION TECHNOLOGY">Department of INFORMATION TECHNOLOGY</option>
+                        <option value="Department of ELECTRONICS & COMMUNICATION ENGINEERING">Department of ELECTRONICS & COMMUNICATION ENGINEERING</option>
+                        <option value="Department of ELECTRONICS & INSTRUMENTATION ENGINEERING">Department of ELECTRONICS & INSTRUMENTATION ENGINEERING</option>
+                        <option value="Department of ELECTRICAL & ELECTRONICS ENGINEERING">Department of ELECTRICAL & ELECTRONICS ENGINEERING</option>
+                        <option value="Department of COMPUTER SCIENCE & ENGINEERING">Department of COMPUTER SCIENCE & ENGINEERING</option>
+                        <option value="Department of MECHANICAL ENGINEERING">Department of MECHANICAL ENGINEERING</option>
+                        <option value="Department of DATA SCIENCE">Department of DATA SCIENCE</option>
+                        <option value="Department of CIVIL ENGINEERING">Department of CIVIL ENGINEERING</option>
+                        <option value="Department of CYBER SECURITY">Department of CYBER SECURITY</option>
+                        <option value="Department of ARTIFICIAL INTELLIGENCE & MACHINE LEARNING">Department of ARTIFICIAL INTELLIGENCE & MACHINE LEARNING</option>
+                    </select>
+        
+                    <label for="sem">Select Semester:</label>
+                    <select id="sem" name="sem">
+                        <option value="Select">Select</option>
+                        <option value="I-sem">I</option>
+                        <option value="II-sem">II</option>
+                        <option value="III-sem">III</option>
+                        <option value="IV-sem">IV</option>
+                        <option value="V-sem">V</option>
+                        <option value="VI-sem">VI</option>
+                        <option value="VII-sem">VII</option>
+                        <option value="VIII-sem">VIII</option>
+                    </select>
+        
+                    <label for="name of exam">Name of the Exam:</label>
+                    <select id="exam" name="exam">
+                        <option value="Select">Select</option>
+                        <option value="Assignment-1">Assignment-1</option>
+                        <option value="Assignment-2">Assignment-2</option>
+                        <option value="Mid-term Examination-1">Mid-term Examination-1</option>
+                        <option value="Mid-term Examination-2">Mid-term Examination-2</option>
+                        <option value="Supplementary">Supplementary</option>
+                    </select>
+        
+                    <label for="subject">Name of the Subject:</label>
+                    <input type="text" id="subject" name="subject" required>
+        
+                    <!--<label for="paper-name">Question Paper Name:</label>
+                    <input type="text" id="paper-name" name="paper-name" value="default" required>-->
+        
+                    <label for="paper-code">Question Paper Code:</label>
+                    <input type="text" id="paper-code" name="paper-code" required>
+        
+                    <label for="exam-date">Date of the Exam:</label>
+                    <input type="date" id="exam-date" name="exam-date" required>
+        
+                    <label for="exam-time">Duration of the Exam:</label>
+                    <input type="time" id="exam-time" name="exam-time" required>
+        
+                    <label for="num-sections">Number of Sections:</label>
+                    <input type="number" id="num-sections" name="num-sections" min="1" required>
+        
+                    <div id="sections-container">
+                        <!-- Sections will be added dynamically using JavaScript -->
+                    </div>
+        
+                    <!-- Buttons -->
+                    <div class="btn-container">
+                        <button type="submit">Submit</button>
+                    </div>
+        
+                </form>
+            </div>
+        </div>
+            </div>
+
+    <script>
+        document.getElementById("num-sections").addEventListener("change", function() {
+            const numSections = this.value;
+            const sectionsContainer = document.getElementById("sections-container");
+            sectionsContainer.innerHTML = ""; // Clear previous sections
+        
+            // Initialize global counter for main questions
+            let mainQuestionCounter = 0;
+        
+            for (let i = 1; i <= numSections; i++) {
+                const section = document.createElement("div");
+                section.classList.add("section");
+        
+                const sectionLabel = document.createElement("label");
+                sectionLabel.textContent = `Section ${i}:`;
+        
+                const sectionNameInput = document.createElement("input");
+                sectionNameInput.type = "text";
+                sectionNameInput.name = `Section ${i}`;
+                sectionNameInput.placeholder = "Enter section Name ";
+                sectionNameInput.required = true;
+        
+                section.appendChild(document.createElement("br"));
+                section.appendChild(document.createElement("br"));
+                section.appendChild(sectionLabel);
+                section.appendChild(sectionNameInput);
+        
+                const numMainQuestionsInput = document.createElement("input");
+                numMainQuestionsInput.type = "number";
+                numMainQuestionsInput.name = `num-main-questions-${i}`;
+                numMainQuestionsInput.placeholder = "Number of main questions";
+                numMainQuestionsInput.required = true;
+        
+                section.appendChild(document.createElement("br"));
+                section.appendChild(numMainQuestionsInput);
+        
+                const mainQuestionsContainer = document.createElement("div");
+        
+                numMainQuestionsInput.addEventListener("change", function() {
+                    const numMainQuestions = parseInt(this.value);
+        
+                    const previousMainQuestions = mainQuestionsContainer.querySelectorAll(".main-question").length;
+                    const difference = numMainQuestions - previousMainQuestions;
+                    if (difference > 0) {
+                        for (let j = 1; j <= difference; j++) {
+                            mainQuestionCounter++;
+        
+                        // Alphabet counter for sub-questions
+                        let subQuestionAlphabet = 'a';
+        
+                        const mainQuestionDiv = document.createElement("div");
+                        mainQuestionDiv.classList.add("main-question");
+        
+                        const mainQuestionLabel = document.createElement("label");
+                        mainQuestionLabel.textContent = `Main Question ${mainQuestionCounter}:`;
+        
+                        const numSubQuestionsInput = document.createElement("input");
+                        numSubQuestionsInput.type = "number";
+                        numSubQuestionsInput.name = `num-sub-questions-${i}-${j}`;
+                        numSubQuestionsInput.placeholder = "Number of sub-questions";
+                        numSubQuestionsInput.required = true;
+        
+                        mainQuestionDiv.appendChild(document.createElement("br"));
+                        mainQuestionDiv.appendChild(mainQuestionLabel);
+                        mainQuestionDiv.appendChild(numSubQuestionsInput);
+        
+                        const subQuestionsContainer = document.createElement("div");
+        
+                        numSubQuestionsInput.addEventListener("change", function() {
+                            const numSubQuestions = parseInt(this.value);
+                            subQuestionsContainer.innerHTML = ""; // Clear previous sub-questions
+        
+                            for (let k = 1; k <= numSubQuestions; k++) {
+                                // Question number for the preview (Main Question Number + Alphabet)
+                                const subQuestionNumber = `${subQuestionAlphabet}`;
+        
+                                // Increment alphabet counter for next sub-question
+                                subQuestionAlphabet = String.fromCharCode(subQuestionAlphabet.charCodeAt(0) + 1);
+        
+                                const subQuestionDiv = document.createElement("div");
+                                subQuestionDiv.classList.add("sub-question");
+        
+                                const subQuestionLabel = document.createElement("label");
+                                subQuestionLabel.textContent = `Sub-Question ${subQuestionNumber}:`;
+        
+                                const questionTypeSelect = document.createElement("select");
+                                questionTypeSelect.name = `question-type-${i}-${j}-${k}`;
+                                questionTypeSelect.innerHTML = `
+                                    <option value="Select">Select</option>
+                                    <option value="Descriptive">Descriptive</option>
+                                    <option value="MCQ">MCQ</option>
+                                    <option value="FillInTheBlank">Fill in the Blank</option>
+                                    <option value="TrueOrFalse">True or False</option>
+                                `;
+
+                                const bloomTaxonomySelect = document.createElement("select");
+                                            bloomTaxonomySelect.name = `bloom-level-${i}-${j}-${k}`;
+                                            const levels = ["L1", "L2", "L3", "L4", "L5", "L6"];
+                                            levels.forEach(level => {
+                                                const option = document.createElement("option");
+                                                option.value = level;
+                                                option.textContent = level;
+                                                bloomTaxonomySelect.appendChild(option);
+                                            });
+        
+                                            const unitInput = document.createElement("select");
+                                            unitInput.name = `unit-${i}-${j}-${k}`;
+                                            unitInput.innerHTML = `
+                                                <option value="Select">Select</option>
+                                                <option value="co1">CO1</option>
+                                                <option value="co2">CO2</option>
+                                                <option value="co3">CO3</option>
+                                                <option value="co4">CO4</option>
+                                            `;
+        
+                                const marksInput = document.createElement("input");
+                                marksInput.type = "number";
+                                marksInput.name = `marks-${i}-${j}-${k}`;
+                                marksInput.placeholder = "Marks";
+                                marksInput.required = true;
+        
+                                subQuestionDiv.appendChild(document.createElement("br"));
+                                subQuestionDiv.appendChild(subQuestionLabel);
+                                subQuestionDiv.appendChild(document.createElement("br"));
+                                subQuestionDiv.appendChild(questionTypeSelect);
+                                subQuestionDiv.appendChild(document.createElement("br"));
+                                subQuestionDiv.appendChild(unitInput);
+                                subQuestionDiv.appendChild(document.createElement("br"));
+                                subQuestionDiv.appendChild(bloomTaxonomySelect);
+                                subQuestionDiv.appendChild(document.createElement("br"));
+                                subQuestionDiv.appendChild(marksInput);
+        
+                                subQuestionsContainer.appendChild(subQuestionDiv);
+                            }
+                        
+                        });
+        
+                        mainQuestionDiv.appendChild(subQuestionsContainer);
+                        mainQuestionsContainer.appendChild(mainQuestionDiv);
+                    }
+                }
+                else if (difference < 0) {
+                                for (let j = 0; j > difference; j--) {
+                                    mainQuestionCounter--;
+                                    mainQuestionsContainer.removeChild(mainQuestionsContainer.lastChild);
+                                }
+                            }
+                });
+        
+                section.appendChild(mainQuestionsContainer);
+                sectionsContainer.appendChild(section);
+            }
+        });
+        
+    </script>
+</body>
+</html>

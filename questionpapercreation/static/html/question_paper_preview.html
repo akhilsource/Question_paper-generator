@@ -1,0 +1,256 @@
+<!-- question_paper_preview.html -->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View and Download Question Paper</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
+    
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <style>
+        p{margin-bottom: 0;
+        font-family: 'Times New Roman', Times, serif;
+        }
+        body{
+            font-family: 'Times New Roman', Times, serif;
+            
+        }
+        
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            display: flex;
+            align-items: center;
+            background-color: #0056b3;
+        }
+        /* Hide the download button when printing */
+        @media print {
+            button {
+                display: none !important;
+            }
+        }
+        .answer{
+            display: none;
+        }
+       .img-div{
+        display: flex;
+        flex-direction:row;
+        flex-wrap: wrap;
+        
+       }
+       .flex-container {
+        display: flex;
+        
+        flex-wrap: wrap;
+        }
+
+        .flex-item {
+            margin-bottom: 10%;
+            max-height: 300px;
+        flex: 1 0 300px; /* Initial width of 300px, can shrink but not grow */
+        margin: 10px; /* Adjust margins as needed */
+        }
+
+        img {
+           
+        max-width: 100%; /* Ensures images don't exceed the width of their container */
+        height: 100%; /* Maintain aspect ratio */
+        }
+
+        @media  (max-width: 768px) {    
+        .flex-item {
+            flex-basis: calc(50% - 20px); /* Two items per row */
+        }
+        }
+
+        
+    </style>
+</head>
+
+<body>
+    <div id="pdf-content" class="mx-4 mt-3" style="display:flex; flex-direction: column; gap:5px;">
+        <div class="mx-3 pe-5 mt-3" style="display:flex;  align-items: center; gap:5px; width:100%">
+            <div class="logo ">
+                <img src="{%static 'img/image.png' %}" width="100px" />
+            </div>
+            <div class="me-5 mt-3" style="display:flex; flex-direction: column; align-items: center;  width:100%">
+                <div class="bec" style="font-family: 'Old English Text MT', serif;font-size: larger;"><b>Bapatla Engineering College:: Bapatla</b></div>
+                <div class="autonomous" style="font-size: medium;">(Autonomous)</div>
+            <div class="d-flex justify-content-center "><b>{{ question_paper.Department }}</b></div>
+            <p class="d-flex justify-content-center "><b>{{ question_paper.Category.Name }}</b></p>
+            </div>
+        </div>
+            <div class="d-flex justify-content-between">
+                <h5 class="d-flex justify-content-center "><b>B.Tech</b><pre class="mb-0 pb-0"> </pre> {{ question_paper.Semester }}</h5>
+                <h5 class="d-flex justify-content-center ">{{ question_paper.Subject.Name }}</h5>
+                <h5 class="d-flex justify-content-center ">{{ question_paper.PaperCode }}</h5>
+            </div>
+            
+        
+        <div class="d-flex justify-content-between">
+            <p class="d-flex justify-content-center "><b>Total Time:</b>{{ question_paper.ExamTime|time:"H:i" }}</p>
+            <p class="d-flex justify-content-center "><b>Total Marks:</b>{{ question_paper.TotalMarks }}</p>
+            <p class="d-flex justify-content-center "><b>Date:</b>{{ question_paper.ExamDate }}</p>
+        </div>
+        
+        <ol>
+            {% for section in sections %}
+            <div class="section">
+                <h5 class="d-flex justify-content-center mt-4 "><b>{{ section.SectionName }}</b></h5>
+                {% with section_number=forloop.counter %}
+                {% for mainquestion in mainquestions %}
+                
+                {% if mainquestion.Section == section %}
+                
+                <li class="main mb-2">
+                    
+                    <ol type="a" class="px-1">
+                        <div style="display: table; width: 100%;">
+                        {% with mainquestion_counter=forloop.counter %}
+                        {% for question in qpq %}
+                        {% with subquestion_counter=forloop.counter %}
+                            {% if question.SectionNumber == section.SectionNumber and question.MainQuestionsID == mainquestion %}
+                            
+                            
+                                <!-- Question content -->
+                                <div class="question-row" style="display: table-row;">
+                                    <div class="question-cell mt-4" style="display: table-cell; width: 94%; padding-left: 20px; vertical-align: middle;">
+                                        <div class="question-text mb-0" style="font-family: 'Times New Roman', Times, serif;font-size: 16px !important;text-align: justify;"><li>{{ question.QuestionID.QuestionText|safe }}</li></div>
+                                    </div>
+                                    <div class="question-cell" style="display: table-cell; width: 2%; padding-left: 20px; vertical-align: middle;">
+                                        <div class="blooms-taxonomy">[{{ question.QuestionID.Unit }}]</div>
+                                    </div>
+                                    <div class="question-cell" style="display: table-cell; width: 2%; padding-left: 20px; vertical-align: middle;">
+                                        <div class="blooms-taxonomy">[{{ question.QuestionID.BloomTaxonomyID }}]</div>
+                                    </div>
+                                    <div class="question-cell" style="display: table-cell; width: 2%; padding-left: 20px; vertical-align: middle;">
+                                        <div class="marks">[{{ question.QuestionID.Marks }}]</div>
+                                    </div>
+                                </div>
+                                {% if question.QuestionID.question_images.all %}
+                                    <!-- Display the images associated with the question -->
+                                    <div class="flex-container">
+                                        {% for image in question.QuestionID.question_images.all %}
+                                        <div class="flex-item" style="margin-bottom: 120px;">
+                                            <img  src="{{ image.Image.url }}" alt="Question Image">
+                                            <p class="image-caption">Section {{ section_number }}, Main Question {{ mainquestion_counter }}, Sub-Question {{ subquestion_counter }}, Image {{ forloop.counter }}</p>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                {% if question.QuestionID.Type == "MCQ" %}
+                                    <ol class="px-5">
+                                        <li><input type="radio" name="question" value="{{ question.QuestionID.OptionA }}">{{ question.QuestionID.OptionA }}</li>
+                                        <li><input type="radio" name="question" value="{{ question.QuestionID.OptionA }}">{{ question.QuestionID.OptionB }}</li>
+                                        <li><input type="radio" name="question" value="{{ question.QuestionID.OptionA }}">{{ question.QuestionID.OptionC }}</li>
+                                        <li><input type="radio" name="question" value="{{ question.QuestionID.OptionA }}">{{ question.QuestionID.OptionD }}</li>
+                                    </ol>
+                                    <div class="ps-2 answer mt-2 mb-5">
+                                        <b>Correct option: </b> {{ question.QuestionID.CorrectOption }}
+                                    </div>
+                                {% endif %}
+                                {% if question.QuestionID.Type == "TrueOrFalse" %}
+                                    <ul >
+                                        <li><input type="radio" name="question" value="True">{{ question.QuestionID.OptionA }}</li>
+                                        <li><input type="radio" name="question" value="False">{{ question.QuestionID.OptionB }}</li>
+                                    </ul>
+                                    <div class="ps-2 answer mt-2 mb-5">
+                                        <b>Correct Answer: </b> {{ question.QuestionID.CorrectOption }}
+                                    </div>
+                                {% endif %}
+                                {% if question.QuestionID.Type == "FillInTheBlank" %}
+                                    <div class="ps-2 answer mt-2 mb-5">
+                                        <b>Correct Answer: </b> {{ question.QuestionID.Answer|safe }}
+                                    </div>
+                                {% endif %}
+                                {% if question.QuestionID.Type == "Descriptive" %}
+                                    <div class="ps-2 answer mt-2 mb-5" style="text-align: justify;">
+                                        <b>Correct Answer: </b> {{ question.QuestionID.Answer|safe }}
+                                    </div>
+                                {% endif %}
+                                
+                                {% if question.QuestionID.answer_images.all %}
+                                    <!-- Display the images associated with the question -->
+                                    <div class="flex-container answer">
+                                        {% for image in question.QuestionID.answer_images.all %}
+                                        <div class="flex-item answer" style="margin-bottom: 120px;">
+                                           <img src="{{ image.Image.url }}" alt="Question Image">
+                                           
+                                                <p class="image-caption text-center mt-2 mb-2"><b>Figure :</b>{{ forloop.counter }}</p>
+                                           
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                
+                            {% endif %}
+                            {% endwith %}
+                        {% endfor %}
+                        <!-- Check if it's not the last question to add the 'or' separator -->
+                        {% if forloop.counter|divisibleby:2 and not forloop.last %}
+                        <div class="or-separator text-center">
+                            <b>(or)</b>
+                        </div>
+                        {% endif %}
+                        {% endwith %}   
+                    </ol>
+                    
+                    {% endif %}
+                {% endfor %}
+                
+            </li>
+            {% endwith %}
+            {% endfor %}
+            
+            </div>
+        </ol>
+    </div>
+    <div class="d-flex mb-5 justify-content-center mt-5">
+        <!--<button id="download-pdf">Download PDF</button>-->
+        <button id="print-button" class="btn btn-primary me-5">Download Question Paper </button>
+        <button id="answer-button" class="btn btn-primary">Download Answer Script </button>
+    </div>
+    <script>
+        /*document.getElementById('download-pdf').addEventListener('click', function() {
+            var title = document.title;
+            const element = document.getElementById('pdf-content'); // Change 'pdf-content' to the ID of the element containing the content you want to convert to PDF
+            html2pdf()
+                .from(element)
+                .save(title +'.pdf');
+        });*/
+        document.getElementById('print-button').addEventListener('click', function() {
+            window.print();
+        });
+        
+        document.getElementById('answer-button').addEventListener('click', function() {
+        // Show all elements with the class 'answer'
+        document.querySelectorAll('.answer').forEach(function(answer) {
+            answer.style.display = 'block';
+        });
+
+        // Now, after showing all answers, print the document
+        window.print();
+
+        // After printing, hide the answers again
+        document.querySelectorAll('.answer').forEach(function(answer) {
+            answer.style.display = 'none';
+        });
+    });
+
+    </script>
+    
+    <script src="{% static 'css/bootstrap.bundle.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>

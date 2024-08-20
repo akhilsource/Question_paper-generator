@@ -1,0 +1,267 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Dashboard</title>
+    <!-- Link Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 200px;
+            min-width: 200px; /* Added to ensure the sidebar doesn't collapse */
+            max-width: 200px; /* Added to ensure the sidebar doesn't expand */
+            background-color: white;
+            color: black;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 0px;
+        }
+        .sidebar-card {
+            margin-top: 60px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .nav-link {
+            display: block;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: gray;
+            transition: background-color 0.3s;
+            border-radius: 5px;
+            margin-bottom: 8px;
+            font-size: large;
+            position: relative;
+        }
+        .nav-link:hover {
+            background-color: #e0e0e0;
+            border-bottom: 2px solid blue;
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+            height: 250px;
+            display: flex;
+            flex-direction: row; /* Changed from column to row */
+            text-align: center;
+        }
+        
+        .section {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            margin-right: 20px;
+            margin-top: 20px;
+            height: 400px;
+        }
+        .card {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex: 1;
+        }
+        .card h4 {
+            margin-top: 0;
+        }
+        header {
+            margin-top: 0px;
+        }
+        nav {
+            background-color:white;
+           
+            padding: 20px;
+            
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex: 1;
+        }
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        ul li {
+            display: inline;
+            margin-right: 1rem;
+        }
+        ul li a {
+            text-decoration: none;
+            color: #0e0f0f;
+            
+        }
+        .section {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            margin-right: 20px;
+            margin-top: 20px;
+            height: 400px;
+        }
+        .module {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 10px; /* Reduced margin */
+        }
+        section.module {
+            background-color: #f8f9fa;
+            padding: 2rem;
+            margin: 2rem auto;
+            width:200px;
+        }
+        section.module h3 {
+            color: #0a0a0a;
+        }
+        form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        label {
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        button {
+            padding: 0.5rem 1rem;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        footer {
+            background-color:rgb(2, 2, 2);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            height: 40px;
+        }
+        .nav-link {
+            display: block;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: gray;
+            transition: background-color 0.3s;
+            border-radius: 5px;
+            margin-bottom: 8px;
+            font-size: large;
+        }
+        .nav-link:hover {
+            background-color: #e0e0e0;
+        }
+        nav {
+            background-color:white;
+           
+            padding: 20px;
+            
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex: 1;
+        }
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        ul li {
+            display: inline;
+            margin-right: 1rem;
+        }
+        ul li a {
+            text-decoration: none;
+            color: #0e0f0f;
+        }
+        .sidebar-card ul li a i {
+            display: inline-block; /* Ensure the icons are displayed as inline blocks */
+            width: 30px; /* Set a fixed width for the icons */
+            margin-left: 0px; /* Center the icon horizontally */
+        }
+        nav ul li:hover a {
+            border-bottom: 2px solid blue; /* Add border-bottom to links within li on hover */
+        }
+        section.module:nth-child(1) {
+            background-color: #f5bce9; /* Light gray */
+        }
+        
+        /* Style for the second section.module */
+        section.module:nth-child(2) {
+            background-color: #abefa8; /* Lighter gray */
+        }
+        
+        /* Style for the third section.module */
+        section.module:nth-child(3) {
+            background-color: #8dd8ef; /* Even lighter gray */
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+        <img src="{%static 'img/bec.jpg' %}" alt="BEC Logo" style="width: 100%; height: 100px;">
+    </header>
+    <nav>
+        <ul>
+            <li> {{user.username}}</li>
+            <li><a href="#"> Dashboard</a></li>
+            <li><a href="#">Categories</a></li>
+            <li><a href="#">Question Papers</a></li>
+            <li> {{user.first_name}} {{user.last_name}}</li>
+        </ul>
+    </nav>
+    <div class="container">
+        <nav class="sidebar">
+            <h2>Question Paper Generation</h2>
+            <div class="sidebar-card">
+                <ul style="list-style-type:none; padding: 0;">
+                    <li><a href="#" class="nav-link"><i class="fas fa-user"></i> Profile</a></li>
+                    <li><a href="/create" class="nav-link"><i class="fas fa-file"></i> Create Question Paper</a></li>
+                    <li><a href="/automatic" class="nav-link"><i class="fas fa-database"></i> Create question paper from Database</a></li>
+                    <li><a href="#" class="nav-link"><i class="fas fa-file-excel"></i> Create question paper from Excel sheet</a></li>
+                    <li><a href="/logout" class="nav-link"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <section class="content">
+            <section class="module">
+                <h3>Create Question Paper</h3>
+                <!-- Add your content for this section -->
+            </section>
+
+            <section class="module">
+                <h3>Create Question Paper from Database</h3>
+                <!-- Add your content for this section -->
+            </section>
+
+            <section class="module">
+                <h3>Create Question Paper from Excel Sheet</h3>
+                <!-- Add your content for this section -->
+            </section>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Faculty Portal</p>
+    </footer>
+</body>
+</html>
