@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css'%}">
+    <title>Question Paper Generation</title>
+</head>
+
+<body>
+
+    <div class="container" id="container">
+        <div class="form-container sign-up">
+            <form method="POST" action="/" onsubmit="return validatePasswords()">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="signup"> <!-- Hidden input field for signup -->
+                <h1>Create Account</h1>
+                <input type="text" placeholder="First Name" name="firstname" required>
+                <input type="text" placeholder="Last Name" name="lastname" required>
+                <!--<input type="text" placeholder="Faculty ID" name="regno" required>-->
+                <input type="email" placeholder="Email" name="email" required>
+              <!--  <div class="otp-1">
+                    <button>verify</button><input type="number" placeholder="OTP">
+                </div>-->
+                <input type="password" id="password" placeholder="Create Password" name="password" required>
+                <input type="password" id="confirm_password" placeholder="Re-enter Password" required>
+                <div class="error-message" id="password_error" style="color: red;"></div>
+                <!--<div class="social-icons">
+                    <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
+                    <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
+                    <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>-->
+                <button>Sign Up</button>
+            </form>
+        </div>
+        <div class="form-container sign-in">
+            <form  action="/" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="login"> <!-- Hidden input field for login -->
+                <h1>Sign In</h1>
+                <!--<div class="social-icons">
+                    <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
+                    <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
+                    <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>-->
+                <input type="email" placeholder="Email" name="email"  required>
+                <input type="password" placeholder="Password" name="password" required>
+                <div class="error-message" id="sign-in-validation" style="color: red;"></div> 
+                <!--<a href="forgetpassword">Forget Your Password?</a>-->
+                <button>Sign In</button>
+            </form>
+        </div>
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <h1>Welcome Back!</h1>
+                    <p>Already a user, give your login credentials here</p>
+                    <button class="hidden" id="login">Sign In</button>
+                </div>
+                <div class="toggle-panel toggle-right">
+                    <h1>Welcome</h1>
+                    <p>Give your personal details to register and use our features</p>
+                    <button class="hidden" id="register">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% if reset_pass %}
+        <script>
+            alert("Password Reset Success");// Show error message if login failed
+        </script>
+    {% endif %}
+    {% if login_failed %}
+        <script>
+            document.getElementById("sign-in-validation").innerHTML = "Incorrect email or password."; // Show error message if login failed
+        </script>
+    {% endif %}
+    <script src="{% static 'js/script.js'%}"></script>
+    {% if user_already_exists %}
+    <script>
+        alert("User already exists");
+    </script>
+    {% endif %}
+    {% if saved_successfully %}
+    <script>
+        alert("Registration success!");
+    </script>
+    {% endif %}
+    <script>
+        
+        function validatePasswords() {
+            var password = document.getElementById("password").value;
+            var confirm_password = document.getElementById("confirm_password").value;
+
+            if (password !== confirm_password) {
+                document.getElementById("password_error").innerHTML = "Passwords do not match";
+                return false;
+            } else {
+                document.getElementById("password_error").innerHTML = "";
+                return true;
+            }
+        }
+    </script>
+</body>
+
+</html>

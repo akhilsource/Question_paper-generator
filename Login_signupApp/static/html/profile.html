@@ -1,0 +1,283 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .pacifico-regular {
+        font-family: "Pacifico", cursive;
+        font-weight: 400;
+        font-style: normal;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            color: black;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        
+        .sidebar-card {
+            margin-top: 5px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 10px;
+        }
+        .nav-link {
+            display: block;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: black;
+            transition: background-color 0.3s;
+            border-radius: 5px;
+            margin-bottom: 8px;
+            font-size: large;
+            position: relative;
+        }
+        .nav-link:hover {
+            background-color: #e0e0e0;
+            color: black;
+            border-bottom: 2px solid blue;
+        }
+        .active{
+            background-color: #e0e0e0;
+            border-bottom: 2px solid blue;
+        }
+        .navb {
+            height: 50px;
+            background-color: white;
+            display: flex;
+            justify-content: space-between; /* Align items to the start and end of the navbar */
+            align-items: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding-left: 2%;
+            height: 10%;
+            z-index: 1000;
+            color: black;
+        }
+        .nav-icon{
+            color: black;
+            padding:5px;
+            border-radius: 5px;
+            font-weight: bold;
+            
+        }
+        .nav-list{
+            list-style-type: none;
+            margin-top: 15px;
+        }
+        .nav-icon:hover{
+            
+            padding:5px;
+            text-decoration: none;
+            border-radius: 5px;
+            background-color: #e0e0e0;
+            border-bottom: 2px solid blue;
+            
+            
+            list-style-type: none;
+        }
+        .maincontainer {
+            display: flex;
+            
+        }
+        /* Custom Styles */
+        .profile-container {
+            max-width: 900px;
+            margin: 2px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex: 1;
+        }
+
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .user-photo-container {
+            position: relative;
+            display: inline-block;
+            background-color: rgb(205, 212, 205);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex:1;
+            width: 200px;
+            height:200px;
+        }
+
+        .user-photo img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .edit-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #000;
+            background-color: #fff;
+            border-radius: 50%;
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        .user-info {
+            margin-top: 20px;
+        }
+
+        .profile-actions {
+            margin-top: 20px;
+        }
+        .save{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navb">
+        <h2 class="pacifico-regular">Manual and Automatic Question Paper Generation System</h2> <!-- Add font-family style here -->
+        <ul>
+            
+                   
+            <li class="nav-list "><a class="nav-icon active"  href="/profile" style="margin-right: 50px;"><i class="fas fa-user"></i> Profile</a></li>
+        </ul>
+    </nav>
+    <div class="maincontainer" style="margin-top: 4%;">
+        <div class="sidebar">
+            <div class="logo" style="margin-left: 20%;">
+                <a href="/dashboard" ><img src="{%static 'img/image.png' %}" width="100px" /></a>
+            </div>
+            <div class="sidebar-card">
+                <ul style="list-style-type:none; padding: 0;">
+                    <li><a href="/dashboard" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="/create" class="nav-link"><i style="margin-right: 10px;" class="fas fa-file"></i>Manual Question Paper Creation</a></li>
+                    <li><a href="/automatic" class="nav-link"><i style="margin-right: 10px;" class="fas fa-database"></i> Automatic Question Paper Generation</a></li>
+                    <li><a href="/question_papers" class="nav-link" ><i class="fas fa-file-alt" style="margin-right: 10px;"></i>
+                        Question Papers</a></li>
+                    <li><a href="/notesgeneration" class="nav-link" ><i class="fas fa-book" style="margin-right: 10px;"></i>
+                            Notes Generation</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+        <div class="profile-container" >
+            <div class="profile-header">
+                <h3>User Profile</h3>
+            </div>
+            <div class="profile-details">
+                {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <form action="" method="POST" enctype="multipart/form-data">{%csrf_token %}   
+                    <div class="user-photo-container">
+                        {% if profile_image %}
+                        <img src="{{ profile_image.url }}" alt="User Photo" id="user-photo" class="" width="200px" height="200px">
+                        {% else %}
+                        <img src="{% static 'img/avatar.jpeg' %}" alt="User Photo" id="user-photo" class="" width="200px" height="200px">
+                        {% endif %}
+                        <label for="photo-upload" class="edit-icon" style="display: none;"><i class="fas fa-camera"></i></label>
+                    </div>
+                    <div class="user-info">
+                        
+                            <label for="firstname">FirstName:</label>
+                            <input type="text" id="firstname" name="firstname" value="{{ user.first_name }}" class="form-control" readonly>
+                            <label for="lastname">LastName:</label>
+                            <input type="text" id="lastname" name="lastname" value="{{ user.last_name }}" class="form-control" readonly>
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" value="{{ user.username }}" class="form-control" readonly>
+                            
+                            <button id="save-btn" class="btn btn-primary mt-3 save">Save</button>
+                        
+                    </div>
+                
+                </div>
+                <!-- Hidden file input -->
+                <input type="file" name="profile_image" id="photo-upload1" accept="image/*" style="display: none;">
+            </form>
+            <div class="profile-actions">
+                <button id="edit-btn" class="btn btn-link"><i class="fas fa-edit"></i> Edit Info</button>
+                <li style="list-style-type: none;"><a href="/logout" class="nav-link"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
+            </div>
+                
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // JavaScript Functionality
+        $(document).ready(function() {
+            const photoUpload = $("#photo-upload1");
+            const userPhoto = $("#user-photo");
+            const firstnameInput = $("#firstname");
+            const lastnameInput = $("#lastname");
+            const emailInput = $("#email");
+            const editBtn = $("#edit-btn");
+            const saveBtn = $("#save-btn");
+            const editicon = $(".edit-icon");
+
+            // Handle edit photo button click
+            $(".edit-icon").one("click", function() {
+                photoUpload.click(); // Trigger file input click
+            });
+
+            // Handle photo upload
+            photoUpload.change(function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        userPhoto.attr("src", e.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Handle edit button click
+            editBtn.click(function() {
+                firstnameInput.removeAttr("readonly");
+                lastnameInput.removeAttr("readonly");
+                emailInput.removeAttr("readonly");
+                editicon.show();
+                editBtn.hide();
+                saveBtn.show();
+            });
+
+            // Handle save button click
+            saveBtn.click(function() {
+                usernameInput.attr("readonly", true);
+                emailInput.attr("readonly", true);
+                editBtn.show();
+                saveBtn.hide();
+                // Here you can add code to save user details, perhaps via an AJAX request
+            });
+        });
+    </script>
+</body>
+</html>

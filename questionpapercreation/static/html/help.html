@@ -1,0 +1,256 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Add your custom CSS styles here */
+        .pacifico-regular {
+        font-family: "Pacifico", cursive;
+        font-weight: 400;
+        font-style: normal;
+        font-size: 24px;
+        }
+        .maincontainer {
+            display: flex;
+            
+        }
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            color: black;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sidebar-card {
+            width: 250px;
+            margin-top: 5px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .nav-link {
+            display: block;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: black;
+            transition: background-color 0.3s;
+            border-radius: 5px;
+            margin-bottom: 8px;
+            font-size: large;
+            position: relative;
+        }
+        .nav-link:hover {
+            background-color: #e0e0e0;
+            color: black;
+            border-bottom: 2px solid blue;
+        }
+        .navb {
+            height: 50px;
+            background-color: white;
+            display: flex;
+            justify-content: space-between; /* Align items to the start and end of the navbar */
+            align-items: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding-left: 2%;
+            height: 10%;
+            z-index: 1000;
+            color: black;
+        }
+        .nav-icon{
+            color: black;
+            padding:5px;
+            border-radius: 5px;
+            font-weight: bold;
+            
+        }
+        .nav-list{
+            list-style-type: none;
+            margin-top: 15px;
+        }
+        .nav-icon:hover{
+            
+            padding:5px;
+            text-decoration: none;
+            border-radius: 5px;
+            background-color: #e0e0e0;
+            border-bottom: 2px solid blue;
+            
+            
+            list-style-type: none;
+        }
+        .card {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .active{
+            background-color: #e0e0e0;
+            border-bottom: 2px solid blue;
+        }
+        .alert {
+        background-color: #f0ad4e;
+        color: white;
+        padding: 10px;
+        position: fixed;
+        top: 10%;
+        width: 100%;
+        text-align: center;
+        z-index: 1000;
+    }
+    .alert .close {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px;
+    }
+    </style>
+</head>
+<body>
+    <nav class="navb">
+        <h2 class="pacifico-regular">Manual and Automatic Question Paper Generation System</h2> <!-- Add font-family style here -->
+        <ul class="d-flex">
+            
+            <li class="nav-list "><a class="nav-icon active"  href="/help" style="margin-right: 50px;"><i class="fa fa-wrench"></i> Manage API</a></li>      
+            <li class="nav-list"><a class="nav-icon"  href="/profile" style="margin-right: 50px;"><i class="fas fa-user"></i> Profile</a></li>
+        </ul>
+    </nav>
+    {% if is_api_key_expired %}
+        <div class="alert">
+            The TinyMCE API key has expired or will expire today. Please update it to ensure continued functionality.</li> 
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %}
+    <div class="maincontainer" style="margin-top: 4%;">
+        <div class="sidebar">
+            <div class="logo" style="margin-left: 20%;">
+                <a href="/dashboard" ><img src="{%static 'img/image.png' %}" width="100px" /></a>
+            </div>
+            <div class="sidebar-card">
+                <ul style="list-style-type:none; padding: 0;">
+                    <li><a href="/dashboard" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="/create" class="nav-link"><i style="margin-right: 10px;" class="fas fa-file"></i>Manual Question Paper Creation</a></li>
+                    <li><a href="/automatic" class="nav-link"><i style="margin-right: 10px;" class="fas fa-database"></i> Automatic Question Paper Generation</a></li>
+                    <li><a href="/question_papers" class="nav-link" ><i class="fas fa-file-alt" style="margin-right: 10px;"></i>
+                        Question Papers</a></li>
+                    <li><a href="/notesgeneration" class="nav-link " ><i class="fas fa-book" style="margin-right: 10px;"></i>
+                            Notes Generation</a></li>
+                    <li><a href="/logout" class="nav-link"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
+                </ul>
+                
+            </div>
+        </div>
+    <div style="margin-top: 20px; margin-left: 10%;display: flex; flex-direction: column;justify-content:center;">
+        
+        <div class="container mt-5 mb-5">
+            <h2>Manage TinyMCE API Key</h2>
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="api_key">Enter TinyMCE API Key:</label>
+                    <input type="text" name="api_key" class="form-control" value="{{ api_key_obj.api_key }}" placeholder="Enter API Key" required>
+                </div>
+                <div class="form-group">
+                    <label for="expected_expiration">Expected Expiration Date:</label>
+                    <input type="date" name="expected_expiration" class="form-control" value="{{ api_key_obj.expected_expiration|date:'Y-m-d' }}" placeholder="Enter Expiration Date" required>
+                </div>
+                <button type="submit" class="btn btn-primary mb-2">Save</button>
+            </form>
+            
+        </div>
+        <h5><u>Help for Creation api Key for the TinyMCE</u></h5>
+        <div><p><b>Step1:</b> Go to  <a href="https://10minutemail.net/" target="blank">10Minutemail</a></p>
+            <div style="width: 70%;height: auto;">
+                <img style="width:100%;" src="{%static 'img/10minutemail.png'%}">
+                <div class="mt-3" style="text-align: center;"><b>Copy the mail</b></div>
+            </div>
+        </div>
+        <div class="mt-5"><p><b>Step2:</b> Go to  <a href="https://www.tiny.cloud/" target="blank">TinyMCE</a></p>
+            <div style="width: 70%;height: auto;">
+                <img style="width:100%;" src="{%static 'img/Get started FREE.png'%}">
+                <div class="mt-3" style="text-align: center;">Click on<b> Get started FREE</b></div>
+            </div>
+        </div>
+        <div class="mt-5"><p><b>Step3:</b> Enter the Copied Email from the 10Minutemail and Enter the Random Password which can be remembered</p>
+            <div style="width: 70%;height: auto;">
+                <img style="width:100%;" src="{%static 'img/Signup to tinymce.png'%}">
+                <div class="mt-3" style="text-align: center;">Click on<b> Signup with email</b></div>
+            </div>
+        </div>
+        <div class="mt-5"><p><b>Step4:</b> Enter the Random Details</p>
+            <div style="width: 70%;height: auto;">
+                <img style="width:100%;" src="{%static 'img/Random details.png'%}">
+                <div class="mt-3" style="text-align: center;">Click on<b> Start Using Tiny </b></div>
+            </div>
+        </div>
+        
+        <div class="mt-5"><p><b>Step5:</b> Go to the Approved Domains from the left side Dashboard</p>
+            <div style="width: 70%;height: auto;">
+                <img style="width:100%;" src="{%static 'img/Approved Domains.png'%}">
+                <div class="mt-3" style="text-align: center;">Click on<b> Resend Email </b></div>
+            </div>
+        </div>
+        <div class="mt-5"><p><b>Step6:</b> Go to the 10Minutemail and  Verifiy the Email and come back to the TinyMCE</p>
+            <div style="width: 70%;height: auto;">
+                <img style="width:100%;" src="{%static 'img/Verifiy the Email.png'%}">
+                <div class="mt-3" style="text-align: center;">Click on<b> Email and Verify it </b></div>
+            </div>
+        </div>
+        <div class="mt-5"><p><b>Step7:</b> Open the mail and Click the <b>Confirm your email address</b>  Or <b>copy and paste the following into your browser: https://login.tiny.cloud/u/email-verification?ticket=fHbmBWcy2BuSK8OCj81nJYaXqvitmFmT#</b></p>
+            <div style="width: 70%;height: auto;">
+                <img style="width:100%;" src="{% static 'img/Confirm mail.png'%}">
+                
+            </div>
+        </div>
+        <div class="mt-5"><p><b>Step8: </b>Go back to the TinyMCE and refresh and the domain <b>http://127.0.0.1:8000/create/</b></p>
+            <div style="width: 70%;height: auto;">
+                <img style="width:100%;" src="{%static 'img/Add Domain.png'%}">
+                <div class="mt-3" style="text-align: center;">Click on<b> Add </b></div>
+            </div>
+        </div>
+        <div class="mt-5"><p><b>Step9:</b> Click on the <b>Get your API Key</b> </p>
+            <div style="width: 70%;height: auto;">
+                <img style="width:100%;" src="{% static 'img/Copy Api Key1.png'%}">
+                <div  class="mt-3" style="text-align: center;">Click on<b> COPY API Key </b> or copy the highlighted key</div>
+            </div>
+        </div>
+        <!--<div class="mt-3"><p><b>Step10:</b> Replace the Copied Script tag with the highlighted code in the <b>create-question-paper-sub.html</b> file </p>
+            <div style="width: 70%;height: auto;">
+                <img style="width:100%;" src="{% static 'img/Replacing the code.png'%}">
+               
+            </div>
+        </div>-->
+        <div class="mt-5"><p><b>Step10:</b> Enter the New Created Copied API Key and also enter the expected expire date of the API Key </p>
+            <div style="width: 70%;height: auto;">
+                <img style="width:100%;" src="{% static 'img/Enter the new Api Key.png'%}">
+               
+            </div>
+        </div>
+        <div style=" font-weight:bolder;margin: 10%;margin-left: 20%; color: green; ">Enjoy Creating the Question Paper</div>
+    </div>
+
+
+
+     <!-- Bootstrap JS (optional) -->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+     
+</body>
+</html>

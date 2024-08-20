@@ -1,0 +1,1176 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Question Paper Form</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+
+    
+    <link href="https://fonts.googleapis.com/css2?family=Jacquard+24&family=Jersey+15+Charted&display=swap" rel="stylesheet">
+
+  
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .pacifico-regular {
+        font-family: "Pacifico", cursive;
+        font-weight: 400;
+        font-style: normal;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .maincontainer {
+            display: flex;
+            min-height: 100vh;
+        }
+        .container {
+            flex: 1;
+            padding: 20px;
+            max-width: 900px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            color: black;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sidebar-card {
+            margin-top: 5px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .nav-link {
+            display: block;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: black;
+            transition: background-color 0.3s;
+            border-radius: 5px;
+            margin-bottom: 8px;
+            font-size: large;
+            position: relative;
+        }
+        .nav-link:hover {
+            background-color: #e0e0e0;
+            border-bottom: 2px solid blue;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="time"],
+        input[type="number"],
+        select,
+        textarea {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        .options-container {
+            display: none;
+        }
+
+        .options-container.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .option {
+            margin-bottom: 10px;
+        }
+
+        .btn-container {
+            text-align: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .option {
+            margin-bottom: 10px;
+            display: flex; /* Add this line to make the options display in a flex layout */
+            align-items: center; /* Align items vertically center */
+        }
+
+        .option input[type="radio"] {
+            margin-right: 10px; /* Add some spacing between radio button and text field */
+            width: 20px; /* Set the width of the radio button */
+            height: 20px; /* Set the height of the radio button */
+        }
+
+        .section {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .section label {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .section input[type="text"],
+        .section input[type="number"],
+        .section select,
+        .section textarea {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: calc(100% - 20px); /* Adjust the width */
+        }
+
+        .options-container {
+            display: none;
+        }
+
+        .options-container.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .option {
+            margin-bottom: 10px;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 10px;
+            width: 20px;
+            height: 20px;
+        }
+        .navb {
+            height: 50px;
+            background-color: white;
+            display: flex;
+            justify-content: space-between; /* Align items to the start and end of the navbar */
+            align-items: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding-left: 2%;
+            height: 10%;
+            z-index: 1000;
+            color: black;
+        }
+        .nav-icon{
+            color: black;
+            padding:5px;
+            border-radius: 5px;
+            font-weight: bold;
+            
+        }
+        .nav-list{
+            list-style-type: none;
+        }
+        .nav-icon:hover{
+            
+            padding:5px;
+            border-radius: 5px;
+            background-color: #e0e0e0;
+            border-bottom: 2px solid blue;
+            
+            
+            list-style-type: none;
+        }
+        .active{
+            background-color: #e0e0e0;
+            border-bottom: 2px solid blue;
+        }
+        .alert {
+        background-color: #f0ad4e;
+        color: white;
+        padding: 10px;
+        position: fixed;
+        top: 10%;
+        width: 100%;
+        text-align: center;
+        z-index: 1000;
+    }
+    .alert .close {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px;
+    }
+
+    </style>
+    <script>
+        // Declare the API key variable
+        const tinyMceApiKey = "{{ current_api_key }}";
+
+        // Corrected way to include TinyMCE script
+        const script = document.createElement('script'); // Create a new script tag
+        script.src = `https://cdn.tiny.cloud/1/${tinyMceApiKey}/tinymce/7/tinymce.min.js`; // Set the source with the API key
+        script.referrerPolicy = 'origin'; // Set the referrer policy
+
+        // Append the script to the head or body to load TinyMCE
+        document.head.appendChild(script); // Use appendChild to add the script to the head
+    </script>
+
+    
+
+</head>
+<body>
+    <nav class="navb">
+        <h2 class="pacifico-regular">Manual and Automatic Question Paper Generation System</h2> <!-- Add font-family style here -->
+        <ul style="display: flex;">
+            <li class="nav-list "><a class="nav-icon "  href="/apihelp" style="margin-right: 50px;"><i class="fa fa-wrench"></i> Manage API</a></li>  
+                   
+            <li class="nav-list"><a class="nav-icon"  href="/profile" style="margin-right: 50px;"><i class="fas fa-user"></i> Profile</a></li>
+        </ul>
+    </nav>
+    {% if is_api_key_expired %}
+        <div class="alert">
+            The TinyMCE API key has expired or will expire today. Please update it to ensure continued functionality.<a href="/apihelp" >Click here to manage the API</a> or Click on the Mange Api Tab on nav bar</li> 
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %}
+    <div class="maincontainer" style="margin-top: 4%;">
+        <div class="sidebar">
+            <div class="logo" style="margin-left: 20%;">
+                <a href="/dashboard" ><img src="{%static 'img/image.png' %}" width="100px" /></a>
+            </div>
+            <div class="sidebar-card">
+                <ul style="list-style-type:none; padding: 0;">
+                    <li><a href="/dashboard" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="/create" class="nav-link active"><i style="margin-right: 10px;" class="fas fa-file"></i>Manual Question Paper Creation</a></li>
+                    <li><a href="/automatic" class="nav-link"><i style="margin-right: 5px;" class="fas fa-database"></i> Automatic Question Paper Generation</a></li>
+                    <li><a href="/question_papers" class="nav-link" ><i class="fas fa-file-alt" style="margin-right: 10px;"></i>Question Papers</a></li>
+                    <li><a href="/notesgeneration" class="nav-link" ><i class="fas fa-book" style="margin-right: 10px;"></i>
+                        Notes Generation</a></li>
+                    <li><a href="/logout" class="nav-link"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
+                </ul>
+                
+            </div>
+        </div>
+        <div class="container">
+            
+            <h2>Manual Question Paper Creation</h2>
+            
+            <form action="" method="POST" id="questionForm" enctype="multipart/form-data">{% csrf_token %}
+
+                <label for="dept">Select Department:</label>
+                <select id="dept" name="dept">
+                    <option value="Select">Select</option>
+                    <option value="Department of INFORMATION TECHNOLOGY">Department of INFORMATION TECHNOLOGY</option>
+                    <option value="Department of ELECTRONICS & COMMUNICATION ENGINEERING">Department of ELECTRONICS & COMMUNICATION ENGINEERING</option>
+                    <option value="Department of ELECTRONICS & INSTRUMENTATION ENGINEERING">Department of ELECTRONICS & INSTRUMENTATION ENGINEERING</option>
+                    <option value="Department of ELECTRICAL & ELECTRONICS ENGINEERING">Department of ELECTRICAL & ELECTRONICS ENGINEERING</option>
+                    <option value="Department of COMPUTER SCIENCE & ENGINEERING">Department of COMPUTER SCIENCE & ENGINEERING</option>
+                    <option value="Department of MECHANICAL ENGINEERING">Department of MECHANICAL ENGINEERING</option>
+                    <option value="Department of DATA SCIENCE">Department of DATA SCIENCE</option>
+                    <option value="Department of CIVIL ENGINEERING">Department of CIVIL ENGINEERING</option>
+                    <option value="Department of CYBER SECURITY">Department of CYBER SECURITY</option>
+                    <option value="Department of ARTIFICIAL INTELLIGENCE & MACHINE LEARNING">Department of ARTIFICIAL INTELLIGENCE & MACHINE LEARNING</option>
+                </select>
+
+                <label for="sem">Select Semester:</label>
+                <select id="sem" name="sem">
+                    <option value="Select">Select</option>
+                    <option value="I-sem">I</option>
+                    <option value="II-sem">II</option>
+                    <option value="III-sem">III</option>
+                    <option value="IV-sem">IV</option>
+                    <option value="V-sem">V</option>
+                    <option value="VI-sem">VI</option>
+                    <option value="VII-sem">VII</option>
+                    <option value="VIII-sem">VIII</option>
+                </select>
+
+                <label for="name of exam">Name of the Exam:</label>
+            <select id="exam" name="exam">
+                <option value="Select">Select</option>
+                <option value="Assignment-1">Assignment-1</option>
+                <option value="Assignment-2">Assignment-2</option>
+                <option value="Mid-term Examination-1">Mid-term Examination-1</option>
+                <option value="Mid-term Examination-2">Mid-term Examination-2</option>
+                <option value="Supplementary">Supplementary</option>
+                <option value="Sem End Examination">Sem End Examination</option>
+            </select>
+
+                <label for="subject">Name of the Subject:</label>
+                <input type="text" id="subject" name="subject" required>
+
+                <!--<label for="paper-name">Question Paper Name:</label>
+                <input type="text" id="paper-name" name="paper-name" value="default" required>-->
+
+                <label for="paper-code">Question Paper Code:</label>
+                <input type="text" id="paper-code" name="paper-code" required>
+
+                <label for="exam-date">Date of the Exam:</label>
+                <input type="date" id="exam-date" name="exam-date" required>
+
+                <label for="exam-time">Duration of the Exam:</label>
+                <input type="time" id="exam-time" name="exam-time" required>
+
+                <label for="total_marks">Total Marks of the Question Paper:</label>
+                <input type="number" max="100" id="total_marks" name="total_marks" required>
+
+                <label for="num-sections">Number of Sections:</label>
+                <input type="number" id="num-sections" name="num-sections" min="1" required>
+
+                <div id="sections-container">
+                    <!-- Sections will be added dynamically using JavaScript -->
+                </div>
+
+
+                <!-- Buttons -->
+                <div class="btn-container">
+                    <button type="submit">Submit</button>
+                    <button type="button" id="previewBtn">Preview</button>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+    <script>
+        document.getElementById("num-sections").addEventListener("change", function() {
+            const numSections = this.value;
+            const sectionsContainer = document.getElementById("sections-container");
+            sectionsContainer.innerHTML = ""; // Clear previous sections
+            // Initialize global counter for main questions
+            let mainQuestionCounter = 0;
+            for (let i = 1; i <= numSections; i++) {
+                const section = document.createElement("div");
+                section.classList.add("section");
+
+                const sectionlabel = document.createElement("label");
+                sectionlabel.textContent = `Section ${i}:`;
+
+                const sectionName = document.createElement("input");
+                sectionName.type = "text";
+                sectionName.name = `section-name-${i}`;
+                sectionName.placeholder = "Enter section Name ";
+                sectionName.required = true;
+
+                section.appendChild(document.createElement("br"));
+                section.appendChild(document.createElement("br"));
+                section.appendChild(sectionlabel);
+                section.appendChild(sectionName);
+
+
+                const numMainQuestionsInput = document.createElement("input");
+                numMainQuestionsInput.type = "number";
+                numMainQuestionsInput.name = `num-main-questions-${i}`;
+                numMainQuestionsInput.placeholder = "Number of main questions";
+                numMainQuestionsInput.required = true;
+
+                section.appendChild(document.createElement("br"));
+                section.appendChild(numMainQuestionsInput);
+
+                const mainQuestionsContainer = document.createElement("div");
+
+                numMainQuestionsInput.addEventListener("change", function() {
+                    const numMainQuestions = parseInt(this.value);
+                    
+                    const previousMainQuestions = mainQuestionsContainer.querySelectorAll(".main-question").length;
+                    const difference = numMainQuestions - previousMainQuestions;
+                    if (difference > 0) {
+                        for (let j = 1; j <= difference; j++) {
+                            mainQuestionCounter++;
+
+                         // Alphabet counter for sub-questions
+                        let subQuestionAlphabet = 'a';
+
+
+                        const mainQuestionDiv = document.createElement("div");
+                        mainQuestionDiv.classList.add("main-question");
+
+                        const mainQuestionLabel = document.createElement("label");
+                        mainQuestionLabel.textContent = `Main Question ${mainQuestionCounter}:`;
+
+                        const numSubQuestionsInput = document.createElement("input");
+                        numSubQuestionsInput.type = "number";
+                        numSubQuestionsInput.name = `num-sub-questions-${i}-${j}`;
+                        numSubQuestionsInput.placeholder = "Number of sub-questions";
+                        numSubQuestionsInput.required = true;
+
+                        mainQuestionDiv.appendChild(document.createElement("br"));
+                        mainQuestionDiv.appendChild(mainQuestionLabel);
+                        mainQuestionDiv.appendChild(numSubQuestionsInput);
+
+                        const subQuestionsContainer = document.createElement("div");
+
+                        numSubQuestionsInput.addEventListener("change", function() {
+                                        const numSubQuestions = parseInt(this.value);
+                                        subQuestionsContainer.innerHTML = ""; // Clear previous sub-questions
+
+                                        for (let k = 1; k <= numSubQuestions; k++) {
+
+                                            // Question number for the preview (Main Question Number + Alphabet)
+                                            const subQuestionNumber = `${subQuestionAlphabet}`;
+
+                                            // Increment alphabet counter for next sub-question
+                                            subQuestionAlphabet = String.fromCharCode(subQuestionAlphabet.charCodeAt(0) + 1);
+                                        
+                                            const questionDiv = document.createElement("div");
+
+                                            const questionLabel = document.createElement("label");
+                                            questionLabel.textContent = `Question ${subQuestionNumber}:`;
+
+                                            const questionTypeSelect = document.createElement("select");
+                                            questionTypeSelect.name = `question-type-${i}-${j}-${k}`;
+                                            questionTypeSelect.innerHTML = `
+                                                <option value="Select">Select</option>
+                                                <option value="Descriptive">Descriptive</option>
+                                                <option value="MCQ">MCQ</option>
+                                                <option value="FillInTheBlank">Fill in the Blank</option>
+                                                <option value="TrueOrFalse">True or False</option>
+                                            `;
+
+                                            const unitInput = document.createElement("select");
+                                            unitInput.name = `unit-${i}-${j}-${k}`;
+                                            unitInput.innerHTML = `
+                                                <option value="Select">Select</option>
+                                                <option value="co1">CO1</option>
+                                                <option value="co2">CO2</option>
+                                                <option value="co3">CO3</option>
+                                                <option value="co4">CO4</option>
+                                            `;
+
+
+                                            const marksInput = document.createElement("input");
+                                            marksInput.type = "number";
+                                            marksInput.name = `marks-${i}-${j}-${k}`;
+                                            marksInput.placeholder = "Marks";
+                                            marksInput.required = true;
+
+                                            const label = document.createElement("label");
+                                            label.textContent = "Bloom's Taxonomy Level:";
+                                            
+
+                                            const bloomTaxonomySelect = document.createElement("select");
+                                            bloomTaxonomySelect.name = `bloom-level-${i}-${j}-${k}`;
+                                            const levels = ["L1", "L2", "L3", "L4", "L5", "L6"];
+                                            levels.forEach(level => {
+                                                const option = document.createElement("option");
+                                                option.value = level;
+                                                option.textContent = level;
+                                                bloomTaxonomySelect.appendChild(option);
+                                            });
+
+                                            const questionTextarea = document.createElement("textarea");
+                                            const textareaId = `question-${i}-${j}-${k}`; // Generate unique ID
+                                            questionTextarea.setAttribute("placeholder", "Enter question");
+                                            questionTextarea.setAttribute("name", textareaId); // Set unique name
+                                            questionTextarea.setAttribute("id", textareaId); // Set unique ID
+
+                                            // Inside the loop where questions are generated dynamically
+                                            const includeImageCheckbox = document.createElement("input");
+                                            includeImageCheckbox.type = "checkbox";
+                                            includeImageCheckbox.name = `include-question-image-${i}-${j}-${k}`;
+                                            includeImageCheckbox.id = `include-question-image-${i}-${j}-${k}`;
+
+                                            const includeImageLabel = document.createElement("label");
+                                            includeImageLabel.setAttribute("for", `include-question-image-${i}-${j}-${k}`);
+                                            includeImageLabel.textContent = "Include question Image";
+
+                                            const imageUploadContainer = document.createElement("div");
+                                            imageUploadContainer.classList.add("image-upload-container");
+                                            imageUploadContainer.id = `image-upload-container-${i}-${j}-${k}`;
+                                            imageUploadContainer.style.display = "none";
+
+                                            
+
+                                            const imageUploadInput = document.createElement("input");
+                                            imageUploadInput.type = "file";
+                                            imageUploadInput.id = `image-upload-${i}-${j}-${k}`;
+                                            imageUploadInput.name = `image-upload-${i}-${j}-${k}`;
+
+
+                                            const addImageButton = document.createElement("button");
+                                            addImageButton.type = "button";
+                                            addImageButton.classList.add("add-image-btn","mb-3");
+                                            addImageButton.textContent = "Add Question Image";
+                                            addImageButton.dataset.section = `${i}-${j}-${k}`;
+
+                                            let imgcount=1;
+                                            function addImageHandler() {
+                                                        
+                                                        const imageUploadContainer = document.getElementById(`image-upload-container-${i}-${j}-${k}`);
+                                                        const newImageUploadInput = document.createElement("input");
+                                                        newImageUploadInput.type = "file";
+                                                        newImageUploadInput.name = `image-upload-${i}-${j}-${k}`;//-additional-${imgcount} --removed to get in view
+                                                        imageUploadContainer.appendChild(newImageUploadInput);  
+                                                        imgcount++;
+                                                    }
+
+
+                                            // Event listener for checkbox
+                                            includeImageCheckbox.addEventListener("change", function() {
+                                                if (this.checked) {
+                                                    imageUploadContainer.style.display = "block";
+
+                                                    // Enable the "Add Image" button and attach the event listener
+                                                    addImageButton.disabled = false;
+                                                                                
+                                                    // Event listener for "Add Image" button
+                                                    addImageButton.addEventListener("click", addImageHandler);
+
+                                                    
+                                                
+                                                } else if (!this.checked)  {
+                                                    imageUploadContainer.innerHTML = '';
+
+                                                    // Enable the "Add Image" button and attach the event listener
+                                                    addImageButton.disabled = true;
+
+                                                    // Inside the "else" block when the checkbox is unchecked
+                                                    addImageButton.removeEventListener("click", addImageHandler);                              
+                                                }
+                                                
+                                            });
+
+                                            const mcqOptionsContainer = document.createElement("div");
+                                            mcqOptionsContainer.classList.add("options-container");
+
+                                            const trueFalseOptionsContainer = document.createElement("div");
+                                            trueFalseOptionsContainer.classList.add("options-container");
+
+                                            questionTypeSelect.addEventListener("change", function() {
+                                                
+                                                
+                                                mcqOptionsContainer.style.display = "none";
+                                                
+                                                trueFalseOptionsContainer.style.display = "none";
+                                                //mcq
+                                                if (questionTypeSelect.value === "MCQ") {
+                                                    const existingAnswerImageUploadContainer = document.getElementById(`answer-image-upload-container-${i}-${j}-${k}`);
+                                                        if (existingAnswerImageUploadContainer) {
+                                                            existingAnswerImageUploadContainer.innerHTML="";
+                                                        }
+                                                const existingAnswerimageUploadInput = document.getElementById(`include-answer-image-${i}-${j}-${k}`);
+                                                if (existingAnswerimageUploadInput) {
+                                                    existingAnswerimageUploadInput.remove();
+                                                        }
+                                                const existinglabelAnswer = document.getElementById(`label-image-upload-container-${i}-${j}-${k}`);
+                                                if (existinglabelAnswer) {
+                                                    existinglabelAnswer.remove();
+                                                        }
+                                                        const existingAnswerimagebutton = document.getElementById(`answer-image-upload-button-${i}-${j}-${k}`);
+                                                if (existingAnswerimagebutton) {
+                                                    existingAnswerimagebutton.remove();
+                                                        }
+                                                    trueFalseOptionsContainer.innerHTML = ""; 
+                                                        const existingAnswerTextarea = document.getElementById(`answer-${i}-${j}-${k}`);
+                                                        if (existingAnswerTextarea) {
+                                                            existingAnswerTextarea.remove();
+                                                        }
+                                                        const existingAnswerInput = document.querySelector(`input[name="answer-${i}-${j}-${k}"]`);
+                                                        if (existingAnswerInput) {
+                                                            existingAnswerInput.remove();
+                                                        }
+                                                        const existingTinyMCEEditor = tinymce.get(`answer-${i}-${j}-${k}`);
+                                                        if (existingTinyMCEEditor) {
+                                                            existingTinyMCEEditor.remove();
+                                                        }
+                                                mcqOptionsContainer.style.display = "flex";
+                                                mcqOptionsContainer.style.gap = "50px";
+
+                                                // Clear previous options
+                                                mcqOptionsContainer.innerHTML = "";
+
+                                                // Add default options
+                                                for (let k = 1; k <= 4; k++) {
+                                                    const optionDiv = document.createElement("div");
+                                                    optionDiv.classList.add("option");
+
+                                                    const optionInput = document.createElement("input");
+                                                    optionInput.setAttribute("type", "radio"); // Set input type to radio
+                                                    optionInput.setAttribute("name", `option-${i}-${j}`); // Set the same name for all radio inputs
+                                                    optionInput.setAttribute("value", `Option ${k}`); // Set value for each option
+
+                                                    const optionTextInput = document.createElement("input");
+                                                    optionTextInput.setAttribute("type", "text"); // Use text input for option
+                                                    optionTextInput.setAttribute("placeholder", `Enter Option ${k}`); // Prompt faculty to enter the option
+                                                    optionTextInput.setAttribute("name", `option-text-${i}-${j}-${k}`); // Set unique name for each text input
+
+                                                    optionInput.addEventListener("change", function() {   
+                                                        const radioName = `option-${i}-${j}`; // Get the name of the radio inputs
+                                                        const radioInputs = document.getElementsByName(radioName); // Get all radio inputs with the same name
+
+                                                        // Loop through each radio input
+                                                        radioInputs.forEach(function(radioInput) {
+                                                            if (radioInput.checked) {
+                                                                radioInput.value = optionTextInput.value; // Set the value of the checked radio input to the value of the text input
+                                                            }
+                                                        });
+                                                    });
+
+                                                    optionDiv.appendChild(optionInput); // Append radio input
+                                                    optionDiv.appendChild(optionTextInput); // Append text input
+                                                    mcqOptionsContainer.appendChild(optionDiv); // Append option container
+                                                }
+                                            
+
+
+                                                } else if (questionTypeSelect.value === "TrueOrFalse") {
+                                                    const existingAnswerImageUploadContainer = document.getElementById(`answer-image-upload-container-${i}-${j}-${k}`);
+                                                        if (existingAnswerImageUploadContainer) {
+                                                            existingAnswerImageUploadContainer.innerHTML="";
+                                                        }
+                                                const existingAnswerimageUploadInput = document.getElementById(`include-answer-image-${i}-${j}-${k}`);
+                                                if (existingAnswerimageUploadInput) {
+                                                    existingAnswerimageUploadInput.remove();
+                                                        }
+                                                const existinglabelAnswer = document.getElementById(`label-image-upload-container-${i}-${j}-${k}`);
+                                                if (existinglabelAnswer) {
+                                                    existinglabelAnswer.remove();
+                                                        }
+                                                        const existingAnswerimagebutton = document.getElementById(`answer-image-upload-button-${i}-${j}-${k}`);
+                                                if (existingAnswerimagebutton) {
+                                                    existingAnswerimagebutton.remove();
+                                                        }
+                                                    const existingAnswerTextarea = document.getElementById(`answer-${i}-${j}-${k}`);
+                                                        if (existingAnswerTextarea) {
+                                                            existingAnswerTextarea.remove();
+                                                        }
+                                                        const existingAnswerInput = document.querySelector(`input[name="answer-${i}-${j}-${k}"]`);
+                                                        if (existingAnswerInput) {
+                                                            existingAnswerInput.remove();
+                                                        }
+                                                        const existingTinyMCEEditor = tinymce.get(`answer-${i}-${j}-${k}`);
+                                                        if (existingTinyMCEEditor) {
+                                                            existingTinyMCEEditor.remove();
+                                                        }
+                                                    trueFalseOptionsContainer.style.display = "flex";
+                                                    trueFalseOptionsContainer.style.flexDirection = "column";
+                                                    trueFalseOptionsContainer.style.gap = "10px";
+                                                    
+
+                                                    const trueOptionDiv = document.createElement("div");
+                                            trueOptionDiv.classList.add("option");
+
+                                            const trueOptionInput = document.createElement("input");
+                                            trueOptionInput.setAttribute("type", "radio");
+                                            trueOptionInput.setAttribute("name", `truefalse-${i}-${j}-${k}`);
+                                            trueOptionInput.setAttribute("value", "True");
+
+                                            const trueOptionLabel = document.createElement("label");
+                                            trueOptionLabel.textContent = "True";
+
+                                            const falseOptionDiv = document.createElement("div");
+                                            falseOptionDiv.classList.add("option");
+
+                                            const falseOptionInput = document.createElement("input");
+                                            falseOptionInput.setAttribute("type", "radio");
+                                            falseOptionInput.setAttribute("name", `truefalse-${i}-${j}-${k}`);
+                                            falseOptionInput.setAttribute("value", "False");
+
+                                            const falseOptionLabel = document.createElement("label");
+                                            falseOptionLabel.textContent = "False";
+
+                                            trueOptionDiv.appendChild(trueOptionInput);
+                                            trueOptionDiv.appendChild(trueOptionLabel);
+                                            trueFalseOptionsContainer.appendChild(trueOptionDiv);
+
+                                            falseOptionDiv.appendChild(falseOptionInput);
+                                            falseOptionDiv.appendChild(falseOptionLabel);
+                                            trueFalseOptionsContainer.appendChild(falseOptionDiv);
+
+                                            
+                                            questionDiv.appendChild(trueFalseOptionsContainer);
+
+
+                                                }
+                                                else if (questionTypeSelect.value === "Descriptive" || questionTypeSelect.value === "FillInTheBlank") {
+                                                // Hide multiple-choice and true/false options containers
+                                                const existingAnswerImageUploadContainer = document.getElementById(`answer-image-upload-container-${i}-${j}-${k}`);
+                                                        if (existingAnswerImageUploadContainer) {
+                                                            existingAnswerImageUploadContainer.innerHTML="";
+                                                        }
+                                                const existingAnswerimageUploadInput = document.getElementById(`include-answer-image-${i}-${j}-${k}`);
+                                                if (existingAnswerimageUploadInput) {
+                                                    existingAnswerimageUploadInput.remove();
+                                                        }
+                                                const existinglabelAnswer = document.getElementById(`label-image-upload-container-${i}-${j}-${k}`);
+                                                if (existinglabelAnswer) {
+                                                    existinglabelAnswer.remove();
+                                                        }
+                                                        const existingAnswerimagebutton = document.getElementById(`answer-image-upload-button-${i}-${j}-${k}`);
+                                                if (existingAnswerimagebutton) {
+                                                    existingAnswerimagebutton.remove();
+                                                        }
+
+                                                mcqOptionsContainer.style.display = "none";
+                                                trueFalseOptionsContainer.style.display = "none";
+                                                const existingAnswerTextarea = document.getElementById(`answer-${i}-${j}-${k}`);
+                                                        if (existingAnswerTextarea) {
+                                                            existingAnswerTextarea.remove();
+                                                        }
+                                                        const existingAnswerInput = document.querySelector(`input[name="answer-${i}-${j}-${k}"]`);
+                                                        if (existingAnswerInput) {
+                                                            existingAnswerInput.remove();
+                                                        }
+                                                        const existingTinyMCEEditor = tinymce.get(`answer-${i}-${j}-${k}`);
+                                                        if (existingTinyMCEEditor) {
+                                                            existingTinyMCEEditor.remove();
+                                                        }
+
+                                                // Display answer space using TinyMCE for descriptive questions
+
+                                                if (questionTypeSelect.value === "Descriptive") {
+                                                    const answerTextarea = document.createElement("textarea");
+                                                    answerTextarea.setAttribute("placeholder", "Enter your answer");
+                                                    answerTextarea.setAttribute("name", `answer-${i}-${j}-${k}`);
+                                                    answerTextarea.setAttribute("id", `answer-${i}-${j}-${k}`);
+                                                    questionDiv.appendChild(answerTextarea);
+
+                                                    tinymce.init({
+                                                        selector: `#answer-${i}-${j}-${k}`,
+                                                        plugins: 'paste',
+                                                        paste_preprocess: function (plugin, args) {
+                                                            // This function can be used to clean up pasted content.
+                                                            // In this case, we will remove all formatting.
+                                                            var strippedText = args.content.replace(/<[^>]+>/g, ''); // Remove all HTML tags
+                                                            args.content = strippedText; // Assign the cleaned content
+                                                        },
+                                                        content_style: 'body { font-size: 16px; font-family: Times New Roman; }', // Set default styles
+                                                    });
+
+                                                    const includeAnswerImageCheckbox = document.createElement("input");
+                                                    includeAnswerImageCheckbox.type = "checkbox";
+                                                    includeAnswerImageCheckbox.name = `include-answer-image-${i}-${j}-${k}`;
+                                                    includeAnswerImageCheckbox.id = `include-answer-image-${i}-${j}-${k}`;
+
+                                                    const includeAnswerImageLabel = document.createElement("label");
+                                                    includeAnswerImageLabel.setAttribute("for", `include-answer-image-${i}-${j}-${k}`);
+                                                    includeAnswerImageLabel.textContent = "Include Answer Image";
+                                                    includeAnswerImageLabel.id = `label-image-upload-container-${i}-${j}-${k}`;
+
+
+                                                    // Append the checkbox and label to the question container
+                                                    questionDiv.appendChild(document.createElement("br"));
+                                                    questionDiv.appendChild(includeAnswerImageCheckbox);
+                                                    questionDiv.appendChild(document.createTextNode(" ")); // Add a space for better spacing
+                                                    questionDiv.appendChild(includeAnswerImageLabel);
+
+
+                                                    const answerImageUploadContainer = document.createElement("div");
+                                                    answerImageUploadContainer.classList.add("image-upload-container");
+                                                    answerImageUploadContainer.id = `answer-image-upload-container-${i}-${j}-${k}`;
+                                                    answerImageUploadContainer.style.display = "none";
+
+                                                    
+                                                    const answerimageUploadInput = document.createElement("input");
+                                                    answerimageUploadInput.type = "file";
+                                                    answerimageUploadInput.id = `answer-image-upload-${i}-${j}-${k}`;
+                                                    answerimageUploadInput.name = `answer-image-upload-${i}-${j}-${k}`;
+
+
+                                                    const addAnswerImageButton = document.createElement("button");
+                                                    addAnswerImageButton.type = "button";
+                                                    addAnswerImageButton.id = `answer-image-upload-button-${i}-${j}-${k}`;
+                                                    addAnswerImageButton.classList.add("add-image-btn", "mb-3");
+                                                    addAnswerImageButton.textContent = "Add Answer Image";
+                                                    addAnswerImageButton.dataset.section = `${i}-${j}-${k}`;
+
+                                                    let answerImgCount = 1;
+                                                    function addAnswerImageHandler() {
+                                                        const answerImageUploadContainer = document.getElementById(`answer-image-upload-container-${i}-${j}-${k}`);
+                                                        const newAnswerImageUploadInput = document.createElement("input");
+                                                        newAnswerImageUploadInput.type = "file";
+                                                        newAnswerImageUploadInput.name = `answer-image-upload-${i}-${j}-${k}`;
+                                                        answerImageUploadContainer.appendChild(newAnswerImageUploadInput);
+                                                        answerImgCount++;
+                                                    }
+
+                                                    includeAnswerImageCheckbox.addEventListener("change", function() {
+                                                        if (this.checked) {
+                                                            answerImageUploadContainer.style.display = "block";
+                                                            addAnswerImageButton.disabled = false;
+                                                            addAnswerImageButton.addEventListener("click", addAnswerImageHandler);
+                                                        } else if (!this.checked) {
+                                                            answerImageUploadContainer.innerHTML = '';
+                                                            addAnswerImageButton.disabled = true;
+                                                            addAnswerImageButton.removeEventListener("click", addAnswerImageHandler);
+                                                        }
+                                                    });
+
+                                                    
+                                                    
+                                                    questionDiv.appendChild(answerImageUploadContainer);
+                                                    questionDiv.appendChild(document.createElement("br"));
+                                                    answerImageUploadContainer.appendChild(answerimageUploadInput)
+                                                    questionDiv.appendChild(addAnswerImageButton);
+                                                }
+
+
+                                                // Display text input for fill-in-the-blank questions
+                                                else if (questionTypeSelect.value === "FillInTheBlank") {
+                                                    const existingAnswerImageUploadContainer = document.getElementById(`answer-image-upload-container-${i}-${j}-${k}`);
+                                                        if (existingAnswerImageUploadContainer) {
+                                                            existingAnswerImageUploadContainer.innerHTML="";
+                                                        }
+                                                    const existingAnswerTextarea = document.getElementById(`answer-${i}-${j}-${k}`);
+                                                        if (existingAnswerTextarea) {
+                                                            existingAnswerTextarea.remove();
+                                                        }
+                                                        const existingAnswerInput = document.querySelector(`input[name="answer-${i}-${j}-${k}"]`);
+                                                        if (existingAnswerInput) {
+                                                            existingAnswerInput.remove();
+                                                        }
+                                                        const existingTinyMCEEditor = tinymce.get(`answer-${i}-${j}-${k}`);
+                                                        if (existingTinyMCEEditor) {
+                                                            existingTinyMCEEditor.remove();
+                                                        }
+                                                    const answerInput = document.createElement("input");
+                                                    answerInput.setAttribute("type", "text");
+                                                    answerInput.setAttribute("placeholder", "Enter your answer");
+                                                    answerInput.setAttribute("name", `answer-${i}-${j}-${k}`);
+                                                    questionDiv.appendChild(answerInput);
+                                                }
+                                            }
+                                            });
+
+                                            
+
+
+                                            questionDiv.appendChild(document.createElement("br"));
+                                            questionDiv.appendChild(questionLabel);
+                                            questionDiv.appendChild(questionTypeSelect);
+                                            questionDiv.appendChild(unitInput);
+                                            questionDiv.appendChild(marksInput);
+                                            questionDiv.appendChild(document.createElement("br"));
+                                            questionDiv.appendChild(label);
+                                            questionDiv.appendChild(bloomTaxonomySelect);
+                                            questionDiv.appendChild(document.createElement("br"));
+                                            questionDiv.appendChild(questionTextarea);
+                                            questionDiv.appendChild(document.createElement("br"));
+                                            questionDiv.appendChild(document.createElement("br"));
+                                            // Append elements to question container
+                                            questionDiv.appendChild(includeImageCheckbox);
+                                            questionDiv.appendChild(includeImageLabel);
+                                            questionDiv.appendChild(document.createElement("br"));
+                                            questionDiv.appendChild(document.createElement("br"));
+                                            questionDiv.appendChild(imageUploadContainer);                        
+                                            questionDiv.appendChild(document.createElement("br"));
+                                            imageUploadContainer.appendChild(imageUploadInput);
+                                            questionDiv.appendChild(addImageButton);
+
+                                            
+                                            
+
+                                            questionDiv.appendChild(mcqOptionsContainer);
+                                            
+
+                                            subQuestionsContainer.appendChild(questionDiv);
+
+                                            
+                                            tinymce.init({
+                                                selector: `#${textareaId}`, 
+                                                readonly: false,
+                                                plugins: 'paste',
+                                                paste_preprocess: function (plugin, args) {
+                                                    // This function can be used to clean up pasted content.
+                                                    // In this case, we will remove all formatting.
+                                                    var strippedText = args.content.replace(/<[^>]+>/g, ''); // Remove all HTML tags
+                                                    args.content = strippedText; // Assign the cleaned content
+                                                },
+                                                content_style: 'body { font-size: 16px; font-family: Times New Roman; }', // Set default styles
+
+                                                
+                                            });
+                                        }
+                                    });
+
+                                mainQuestionDiv.appendChild(subQuestionsContainer);
+                                mainQuestionsContainer.appendChild(mainQuestionDiv);
+
+                            }
+
+                        }
+
+                        else if (difference < 0) {
+                                for (let j = 0; j > difference; j--) {
+                                    mainQuestionCounter--;
+                                    mainQuestionsContainer.removeChild(mainQuestionsContainer.lastChild);
+                                }
+                            }
+
+
+                        });
+                        section.appendChild(mainQuestionsContainer);
+                        sectionsContainer.appendChild(section);
+        }
+    });
+
+
+
+
+
+document.getElementById("previewBtn").addEventListener("click", function () {
+    const dept = document.getElementById("dept").value;
+    const category = document.getElementById("exam").value;
+    const sem = document.getElementById("sem").value;
+    const subject = document.getElementById("subject").value;
+    const paperCode = document.getElementById("paper-code").value;
+    const examTime = document.getElementById("exam-time").value;
+    const examDate = document.getElementById("exam-date").value;
+    const numSections = document.getElementById("num-sections").value;
+    
+
+    let totalMarks = 0;
+    let previewContent = "";  
+
+// Calculate total marks
+for (let i = 1; i <= numSections; i++) {
+        const numMainQuestions = document.querySelector(`input[name="num-main-questions-${i}"]`).value;
+
+        // Main Questions
+        for (let j = 1; j <= numMainQuestions; j++) {
+            const numSubQuestions = document.querySelector(`input[name="num-sub-questions-${i}-${j}"]`).value;
+
+            // Sub-Questions
+            for (let k = 1; k <= numSubQuestions; k++) {
+                const marks = parseInt(document.querySelector(`input[name="marks-${i}-${j}-${k}"]`).value);              
+                totalMarks += marks;
+            }
+        }
+    }
+
+// Department, Semester, Subject, Paper Code
+previewContent += `<div class="mx-3 mt-3" style="display:flex; flex-direction: column; align-items: center; gap:5px; width:100%" class="main-header">
+
+                        <div class="mx-3 mt-3" style="display:flex;  align-items: center; gap:5px; width:100%">
+                        <div class="logo">
+                            <img src="{%static 'img/image.png' %}" width="100px" />
+                        </div>
+                        
+                         <div class="mx-3 mt-3" style="display:flex; flex-direction: column; align-items: center;  width:100%">
+                            <div class="bec" style="font-family: 'Old English Text MT', serif;"><b>Bapatla Engineering College:: Bapatla</b></div>
+                            <div class="autonomous">(Autonomous)</div>
+                            <div class="dept"><b>${dept}</b></div>
+                            <div class="category"><b>${category}</b></div>
+                         </div>
+                        </div>
+                        <div style="display:flex; justify-content: space-between; width:100%" class="sub-header">
+                            <div class="semester"><b>B.Tech</b> ${sem}</div>
+                            <div class="subject">${subject}</div>
+                            <div class="paper-code">${paperCode}</div>
+                        </div>
+                        <div class="details" style="display:flex; justify-content: space-between; width:100%">
+                            <div class="exam-time"><b>Total Time:</b> ${examTime}</div>
+                            <div class="total-marks"><b>Total Marks:</b> ${totalMarks}</div>
+                            <div class="exam-date"><b>Date:</b> ${examDate}</div>
+                        </div>`;
+
+// Initialize global counter for main questions
+let mainQuestionCounter = 1;
+
+// Sections and Questions
+for (let i = 1; i <= numSections; i++) {
+    const sectionName = document.querySelector(`input[name="section-name-${i}"]`).value;
+
+    // Section Name
+    previewContent += `<hr> <div style="display:flex; justify-content: center; align-items: center;" class="section-name"><b>${sectionName}</b> </div> <hr>`;
+
+    const numMainQuestions = document.querySelector(`input[name="num-main-questions-${i}"]`).value;
+
+    // Main Questions
+    for (let j = 1; j <= numMainQuestions; j++) {
+            // Question number for the preview
+            const mainQuestionNumber = mainQuestionCounter++;
+
+             // Alphabet counter for sub-questions
+             let subQuestionAlphabet = 'a';
+
+
+            const numSubQuestions = document.querySelector(`input[name="num-sub-questions-${i}-${j}"]`).value;
+
+            // Sub-Questions
+            for (let k = 1; k <= numSubQuestions; k++) {
+               
+
+
+                const marks = parseInt(document.querySelector(`input[name="marks-${i}-${j}-${k}"]`).value);
+                const questionText = tinymce.get(`question-${i}-${j}-${k}`).getContent();
+                const bloomLevel = document.querySelector(`select[name="bloom-level-${i}-${j}-${k}"]`).value;
+                const questionType = document.querySelector(`select[name="question-type-${i}-${j}-${k}"]`).value;
+                const unit=document.querySelector(`select[name="unit-${i}-${j}-${k}"]`).value;
+
+
+                // Question number for the preview (Main Question Number + Alphabet)
+                const subQuestionNumber = `${mainQuestionNumber}.${subQuestionAlphabet}`;
+
+                // Increment alphabet counter for next sub-question
+                subQuestionAlphabet = String.fromCharCode(subQuestionAlphabet.charCodeAt(0) + 1);
+
+                // Question, Bloom's Taxonomy, Marks
+                previewContent += `<div style="display: table; width: 100%;">
+                                    <div class="question-row" style="display: table-row;">
+                                        <div class="question-cell" style="display: table-cell; width: 2%; text-align: right; vertical-align: middle;">
+                                            <div class="question-number">${subQuestionNumber}</div>
+                                        </div>
+                                        <div class="question-cell" style="display: table-cell; width: 94%; padding-left: 20px; vertical-align: middle;">
+                                            <div class="question-text">${questionText}</div>
+                                        </div>
+                                        <div class="question-cell" style="display: table-cell; width: 2%; padding-left: 20px; vertical-align: middle;">
+                                            <div class="unit">[${unit}]</div>
+                                        </div>  
+                                        <div class="question-cell" style="display: table-cell; width: 2%; padding-left: 20px; vertical-align: middle;">
+                                            <div class="blooms-taxonomy">[${bloomLevel}]</div>
+                                        </div>
+                                        <div class="question-cell" style="display: table-cell; width: 2%; padding-left: 20px; vertical-align: middle;">
+                                            <div class="marks">${marks}M</div>
+                                        </div>
+                                    </div>
+                                </div>`;
+
+                const includeImageCheckbox = document.querySelector(`input[name="include-question-image-${i}-${j}-${k}"]`);
+                const imageUploadContainer = document.getElementById(`image-upload-container-${i}-${j}-${k}`);
+                const imageUploadInputs = imageUploadContainer.querySelectorAll('input[type="file"]');
+                previewContent += `<div style="display:flex;flex-wrap:wrap;flex: 1 0 50%;">`;
+                // Check if the image checkbox is checked
+                if (includeImageCheckbox.checked) {
+                    // Display uploaded images in the preview
+                    imageUploadInputs.forEach(function(imageUploadInput) {
+                        if (imageUploadInput.files.length > 0) {
+                            // Loop through each uploaded image file
+                            for (let k = 0; k < imageUploadInput.files.length; k++) {
+                                const imageFile = imageUploadInput.files[k];
+                                const imageURL = URL.createObjectURL(imageFile);
+
+                                // Create an image element and append it to the preview content
+                                previewContent += `<div  style="width:300px;margin:20px">
+                                <img  style="width:300px; height:300px;" src="${imageURL}" alt="Uploaded Image" ">
+                                </div>`;
+                            }
+                        }
+                    });
+                }
+                previewContent += `</div>`;
+
+                // // Answer Images
+                // const includeAnswerImageCheckbox = document.querySelector(`input[name="include-answer-image-${i}-${j}-${k}"]`);
+                // const answerImageUploadContainer = document.getElementById(`answer-image-upload-container-${i}-${j}-${k}`);
+                // const answerImageUploadInputs = answerImageUploadContainer.querySelectorAll('input[type="file"]');
+                // previewContent += `<div style="display:flex;flex-wrap:wrap;flex: 1 0 50%;">`;
+                // // Check if the answer image checkbox is checked
+                // if (includeAnswerImageCheckbox.checked) {
+                //     // Display uploaded images in the preview
+                //     answerImageUploadInputs.forEach(function(answerImageUploadInput) {
+                //         if (answerImageUploadInput.files.length > 0) {
+                //             // Loop through each uploaded image file
+                //             for (let l = 0; l < answerImageUploadInput.files.length; l++) {
+                //                 const answerImageFile = answerImageUploadInput.files[l];
+                //                 const answerImageURL = URL.createObjectURL(answerImageFile);
+
+                //                 // Create an image element and append it to the preview content
+                //                 previewContent += `<div  style="width:300px;margin:20px">
+                //                 <img  style="width:300px; height:300px;" src="${answerImageURL}" alt="Uploaded Answer Image" ">
+                //                 </div>`;
+                //             }
+                //         }
+                //     });
+                // }
+            
+                // previewContent += `</div>`;
+
+
+if (questionType === "MCQ" || questionType === "TrueOrFalse") {
+    // Add a new row for options
+    previewContent += `<div style="display: table; width: 100%;">
+                        <div class="question-row mp-5" style="display: table-row;">
+                        <div class="question-cell" style="display: table-cell; width: 2%;"></div>
+                        <div class="question-cell" style="display: table-cell; width: 98%; margin-left:20px;" colspan="3">`;
+                        
+
+    if (questionType === "MCQ") {
+        // Display options for MCQ questions
+        previewContent += `<ol style="padding-left: 0; margin-left: 0px;">`; // Use padding-left and list-style-type: none to remove default list styling
+
+        for (let k = 1; k <= 4; k++) {
+            const optionValue = document.querySelector(`input[name="option-text-${i}-${j}-${k}"]`).value;
+            previewContent += `<li><input type="radio" name="question-${i}-${j}" value="${optionValue}">${optionValue}</li>`;
+        }
+
+        previewContent += "</ol>";
+    } else if (questionType === "TrueOrFalse") {
+        // Display True or False options
+        previewContent += `<ul style="padding-left: 0; margin-left: 0px;">`; // Use padding-left and list-style-type: none to remove default list styling
+
+        previewContent += `<li><input type="radio" name="question-${i}-${j}-${k}" value="True">True</li>`;
+        previewContent += `<li><input type="radio" name="question-${i}-${j}-${k}" value="False">False</li>`;
+
+        previewContent += "</ul>";
+    }
+
+    previewContent += `</div></div>`; // Close the options row and table
+}
+
+previewContent += `</div>`; // Close the main table
+
+}
+    }
+}
+
+    // Display the preview content
+    const previewWindow = window.open("", "Question Paper Preview", "width=800, height=600");
+    previewWindow.document.body.innerHTML = previewContent;
+});
+
+
+    </script>
+
+    <!-- Include Bootstrap JavaScript for dismissible alerts -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+   
+</body>
+</html>
+

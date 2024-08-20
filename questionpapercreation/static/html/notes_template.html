@@ -1,0 +1,192 @@
+<!-- question_paper_preview.html -->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes Genereation</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
+    
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <style>
+        p{margin-bottom: 0;}
+        body{
+            font-family: 'Times New Roman', Times, serif;
+            
+        }
+        
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            display: flex;
+            align-items: center;
+            background-color: #0056b3;
+        }
+        /* Hide the download button when printing */
+        @media print {
+            button {
+                display: none !important;
+            }
+        }
+       
+       .img-div{
+        display: flex;
+        flex-direction:row;
+        flex-wrap: wrap;
+       }
+       .flex-container {
+        display: flex;
+        
+        flex-wrap: wrap;
+        }
+
+        .flex-item {
+            max-height: 300px;
+        flex: 1 0 300px; /* Initial width of 300px, can shrink but not grow */
+        margin: 10px; /* Adjust margins as needed */
+        }
+
+        img {
+        max-width: 100%; /* Ensures images don't exceed the width of their container */
+        height: 100%; /* Maintains aspect ratio */
+        }
+
+        @media  (max-width: 768px) {
+        .flex-item {
+            flex-basis: calc(50% - 20px); /* Two items per row */
+        }
+        }
+
+        
+    </style>
+</head>
+
+<body>
+    <div id="pdf-content" class="mx-4 mt-3" style="display:flex; flex-direction: column; gap:5px;">
+        <div class="mx-3 mt-3" style="display:flex;  align-items: center; gap:5px; width:100%">
+            <div class="logo">
+                <img src="{%static 'img/image.png' %}" width="100px" />
+            </div>
+            <div class="mx-3 mt-3" style="display:flex; flex-direction: column; align-items: center;  width:100%">
+                <div class="bec" style="font-family: 'Old English Text MT', serif;"><b>Bapatla Engineering College:: Bapatla</b></div>
+                <div class="autonomous">(Autonomous)</div>
+                <h5>Question Paper Notes</h5>
+                {% if subject %}
+                    <h5><b>Subject: </b>{{ subject }}</h5>
+                {% else %}
+                    <h5><b>Subject: </b>All Subjects</h5>
+                {% endif %}
+                {% if questiontype %}
+                    <h5><b>Type of the Questions: </b>{{questiontype}}</h5>
+                {% else %}
+                    <h5><b>Type of the Questions: </b>All Types</h5>
+                {% endif %}
+                {% if unit %}
+                    <h5><b>Unit: </b>{{unit}}</h5>
+                {% else %}
+                    <h5><b>Unit: </b>All Units</h5>
+                {% endif %}
+                
+            </div>
+        </div>
+        <div>
+            
+            <ol style="margin-top: 30px;">
+                {% for question in questions %}
+                <div style="margin-bottom: 50px;">
+                    <li style="margin-bottom: 20px;">
+                        <p style="text-align: justify;"><b>Question:</b> {{ question.QuestionText|safe }}</p>
+                        {% if question.question_images.all %}
+                            <!-- Display the images associated with the question -->
+                            <div class="flex-container">
+                                {% for image in question.question_images.all %}
+                                <div class="flex-item">
+                                    <img  src="{{ image.Image.url }}" alt="Question Image">
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        
+                        {% if question.Type == "MCQ" %}
+                            <ol class="px-5">
+                                <li><input type="radio" name="question" value="{{ question.OptionA }}">{{ question.OptionA }}</li>
+                                <li><input type="radio" name="question" value="{{ question.OptionA }}">{{ question.OptionB }}</li>
+                                <li><input type="radio" name="question" value="{{ question.OptionA }}">{{ question.OptionC }}</li>
+                                <li><input type="radio" name="question" value="{{ question.OptionA }}">{{ question.OptionD }}</li>
+                            </ol>
+                            <div class="ps-2 answer mt-2 mb-5">
+                                <b>Correct option: </b> {{ question.CorrectOption }}
+                            </div>
+                        {% endif %}
+                        {% if question.Type == "TrueOrFalse" %}
+                            <ul >
+                                <li><input type="radio" name="question" value="True">{{ question.OptionA }}</li>
+                                <li><input type="radio" name="question" value="False">{{ question.OptionB }}</li>
+                            </ul>
+                            <div class="ps-2 answer mt-2 mb-5">
+                                <b>Correct Answer: </b> {{ question.CorrectOption }}
+                            </div>
+                        {% endif %}
+                        {% if question.Type == "FillInTheBlank" %}
+                            <div class="ps-2 answer mt-2 mb-5">
+                                <b>Correct Answer: </b> {{ question.Answer|safe }}
+                            </div>
+                        {% endif %}
+                        {% if question.Type == "Descriptive" %}
+                            <div class="ps-2 answer mt-2 mb-1" style="text-align: justify;">
+                                <b>Correct Answer: </b> {{ question.Answer|safe }}
+                            </div>
+                        {% endif %}
+                        {% if question.answer_images.all %}
+                            <!-- Display the images associated with the question -->
+                            <div class="flex-container answer">
+                                {% for image in question.answer_images.all %}
+                                <div class="flex-item answer">
+                                    <img  src="{{ image.Image.url }}" alt="Question Image">
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </li>
+                </div>
+                <hr style="border: 3px solid black;">
+                
+                {% endfor %}
+            </ol>
+        </div>
+    </div>    
+    <div class="d-flex mb-5 justify-content-center mt-5">
+        <!--<button id="download-pdf">Download PDF</button>-->
+        <button id="print-button" class="btn btn-primary me-5">Download Notes </button>
+        
+    </div>
+    <script>
+        /*document.getElementById('download-pdf').addEventListener('click', function() {
+            var title = document.title;
+            const element = document.getElementById('pdf-content'); // Change 'pdf-content' to the ID of the element containing the content you want to convert to PDF
+            html2pdf()
+                .from(element)
+                .save(title +'.pdf');
+        });*/
+        document.getElementById('print-button').addEventListener('click', function() {
+            window.print();
+        });
+        
+        
+
+    </script>
+    
+    <script src="{% static 'css/bootstrap.bundle.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
